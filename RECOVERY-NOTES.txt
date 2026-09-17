@@ -1,0 +1,16 @@
+Recovered ActHub green manual deployment snapshot
+
+Source evidence:
+- index.html recovered from /tmp/tmp.P1qYC5EUxp
+- JS bundle recovered from /tmp/tmp.iFzjIzmmN8/index.js
+- hashed image assets downloaded from https://acthub.org/assets/... while old Pages assets were still reachable
+
+Known missing from this recovered folder:
+- /acthub-green-mark.png
+- /favicon-green-v2.png
+
+These two public-root PNGs are referenced by the recovered index/JS but were not found on local disk and current acthub.org serves the SPA fallback for those paths.
+
+Repair before Pages preview:
+- Added recovered green CSS asset styles-Dqzn8MNj.css from the matching local green build cache.
+- Repointed missing acthub-green-mark.png and favicon-green-v2.png references to favicon.svg because the original root PNG files were not present locally or live.
