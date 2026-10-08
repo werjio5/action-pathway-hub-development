@@ -80,6 +80,10 @@ a.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;whi
 .lab-footer-inner{max-width:var(--max);margin:auto;padding:34px;display:flex;justify-content:space-between;gap:24px;align-items:center}
 .lab-footer strong{font-family:Georgia,"Times New Roman",serif;font-size:24px;letter-spacing:-.02em}
 .lab-footer span{color:#e5efe8;font-size:15px}
+.bottom-quote{max-width:var(--max);margin:28px auto 0;padding:0 34px}
+.bottom-quote div{border-radius:18px;background:var(--green);color:#fff;padding:24px 28px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.42}
+@media(max-width:760px){.bottom-quote{padding:0 22px}.bottom-quote div{font-size:22px}}
+
 @media(max-width:760px){.lab-title{font-size:17px;margin-left:9px;padding-left:9px}.lab-footer-inner{display:block}.lab-footer span{display:block;margin-top:10px}}
 @media(max-width:760px){.topbar-inner{gap:12px}.hero-inner{grid-template-columns:1fr;padding-top:58px}}
 </style>
@@ -104,6 +108,7 @@ a.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;whi
 </section>
 
 </main>
+<section class="bottom-quote"><div>&ldquo;ActHub can be small in features and still be large in effect &mdash; if every feature shortens the distance between intention and collective action.&rdquo;</div></section>
 <footer class="lab-footer"><div class="lab-footer-inner"><strong>ActHub Action Activation Lab</strong><span>A concept prototype for turning Action Pathway learning into sustained action.</span></div></footer>
 <script>
 (()=>{
