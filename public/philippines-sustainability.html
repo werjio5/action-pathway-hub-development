@@ -138,45 +138,29 @@ ActHub Action Pathway participant`;
     $('mailtoBtn').href=`mailto:${encodeURIComponent(org.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
     $('messageBox').scrollIntoView({behavior:'smooth',block:'nearest'});
   }
-  function findHelp(){
+  function findHelp(scrollToResults=false){
     const issue=$('help-issue').value, scope=$('help-scope').value; let needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value); if(!needs.length) needs=['decision','expertise','partner'];
     let orgs=(directory[issue]||[]).filter(o=>(scope==='both'||o.scope===scope));
     orgs=orgs.map(o=>({...o,_score:scoreOrg(o,needs)})).filter(o=>o._score>0).sort((a,b)=>b._score-a._score||a.scope.localeCompare(b.scope)||a.name.localeCompare(b.name));
     currentHelpOrgs=orgs; const results=$('helpResults');results.innerHTML=''; $('messageBox').hidden=true;
     $('directoryCount').textContent=`${orgs.length} verified public contact${orgs.length===1?'':'s'} shown for this route.`;
-    if(!orgs.length){results.innerHTML='<div class="help-card"><h4>No matching contact in this prototype yet</h4><p>Try “Philippines + international” or select another support type. A production ActHub should add local LGU and university contacts dynamically from the user’s location.</p></div>';return;}
-    orgs.forEach((org,idx)=>{
+    if(!orgs.length){
+      results.innerHTML='<div class="help-card"><h4>No matching contact in this prototype yet</h4><p>Try &ldquo;Philippines + international&rdquo; or select another support type. A production ActHub should add local LGU and university contacts dynamically from the user&rsquo;s location.</p></div>';
+      if(scrollToResults) $('directoryCount').scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+    orgs.forEach((org)=>{
       const matched=org.needs.filter(n=>needs.includes(n)); const primary=matched[0]||org.needs[0];
       const card=document.createElement('div');card.className='help-card';card.dataset.orgId=org.name;
-      card.innerHTML=`<div class="org-top"><div><div class="type">${matched.map(n=>esc(needLabels[n])).join(' · ')}</div><h4>${esc(org.name)}</h4></div><span class="scope-pill">${esc(org.scope)}</span></div><p class="why-org">${esc(org.why)}</p><div class="need-tags">${org.needs.map(n=>`<span class="need-tag">${esc(needLabels[n])}</span>`).join('')}</div><div class="ask"><strong>Good first ask:</strong> ${esc(org.ask)}</div><div class="org-links"><a href="mailto:${esc(org.email)}">${esc(org.email)}</a><a href="${esc(org.url)}" target="_blank" rel="noopener">Official / public source ↗</a></div><button class="btn secondary write-org" type="button">Draft message to this organisation</button>`;
+      card.innerHTML=`<div class="org-top"><div><div class="type">${matched.map(n=>esc(needLabels[n])).join(' &middot; ')}</div><h4>${esc(org.name)}</h4></div><span class="scope-pill">${esc(org.scope)}</span></div><p class="why-org">${esc(org.why)}</p><div class="need-tags">${org.needs.map(n=>`<span class="need-tag">${esc(needLabels[n])}</span>`).join('')}</div><div class="ask"><strong>Good first ask:</strong> ${esc(org.ask)}</div><div class="org-links"><a href="mailto:${esc(org.email)}">${esc(org.email)}</a><a href="${esc(org.url)}" target="_blank" rel="noopener">Official / public source &nearr;</a></div><button class="btn secondary write-org" type="button">Draft message to this organisation</button>`;
       card.querySelector('.write-org').addEventListener('click',()=>selectOrg(org,primary)); results.append(card);
-      if(idx===0) setTimeout(()=>selectOrg(org,primary),0);
     });
-  }
-  $('findHelp').addEventListener('click',findHelp);
-  $('loadHelpExample').addEventListener('click',()=>{ $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(); });
-
-
-  function findHelp(){
-    const issue=$('help-issue').value, scope=$('help-scope').value; let needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value); if(!needs.length) needs=['decision','expertise','partner'];
-    let orgs=(directory[issue]||[]).filter(o=>(scope==='both'||o.scope===scope));
-    orgs=orgs.map(o=>({...o,_score:scoreOrg(o,needs)})).filter(o=>o._score>0).sort((a,b)=>b._score-a._score||a.scope.localeCompare(b.scope)||a.name.localeCompare(b.name));
-    currentHelpOrgs=orgs; const results=$('helpResults');results.innerHTML=''; $('messageBox').hidden=true;
-    $('directoryCount').textContent=`${orgs.length} verified public contact${orgs.length===1?'':'s'} shown for this route.`;
-    if(!orgs.length){results.innerHTML='<div class="help-card"><h4>No matching contact in this prototype yet</h4><p>Try “Philippines + international” or select another support type. A production ActHub should add local LGU and university contacts dynamically from the user’s location.</p></div>';return;}
-    orgs.forEach((org,idx)=>{
-      const matched=org.needs.filter(n=>needs.includes(n)); const primary=matched[0]||org.needs[0];
-      const card=document.createElement('div');card.className='help-card';card.dataset.orgId=org.name;
-      card.innerHTML=`<div class="org-top"><div><div class="type">${matched.map(n=>esc(needLabels[n])).join(' · ')}</div><h4>${esc(org.name)}</h4></div><span class="scope-pill">${esc(org.scope)}</span></div><p class="why-org">${esc(org.why)}</p><div class="need-tags">${org.needs.map(n=>`<span class="need-tag">${esc(needLabels[n])}</span>`).join('')}</div><div class="ask"><strong>Good first ask:</strong> ${esc(org.ask)}</div><div class="org-links"><a href="mailto:${esc(org.email)}">${esc(org.email)}</a><a href="${esc(org.url)}" target="_blank" rel="noopener">Official / public source ↗</a></div><button class="btn secondary write-org" type="button">Draft message to this organisation</button>`;
-      card.querySelector('.write-org').addEventListener('click',()=>selectOrg(org,primary)); results.append(card);
-      if(idx===0) setTimeout(()=>selectOrg(org,primary),0);
-    });
+    if(scrollToResults) $('directoryCount').scrollIntoView({behavior:'smooth',block:'start'});
   }
 
-  
-  $('findHelp').addEventListener('click',findHelp);
-  $('loadHelpExample').addEventListener('click',()=>{ $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(); });
-  findHelp();
+  $('findHelp').addEventListener('click',()=>findHelp(true));
+  $('loadHelpExample').addEventListener('click',()=>{ $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(true); });
+  findHelp(false);
 
   const prog=$('progress');function update(){const h=document.documentElement,m=h.scrollHeight-h.clientHeight;prog.style.width=(m?100*h.scrollTop/m:0)+'%';}window.addEventListener('scroll',update,{passive:true});update();
 })();
