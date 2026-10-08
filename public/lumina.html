@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex, nofollow, noarchive" />
+<meta name="googlebot" content="noindex, nofollow, noarchive" />
+<title>LUMINA Madrid contact finder</title>
+<style>
+  body{font-family:Arial,sans-serif;line-height:1.5;max-width:920px;margin:32px auto;padding:0 18px;color:#111;background:#fff}
+  h1{font-size:30px;margin-bottom:8px} h2{font-size:22px;margin-top:30px} h3{margin-top:0}
+  label{display:block;font-weight:bold;margin-top:14px}
+  input,select,textarea{width:100%;box-sizing:border-box;padding:11px 12px;margin-top:5px;font:inherit;border:1px solid #bbb;border-radius:14px}
+  textarea{min-height:125px}.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:8px}
+  .checks label{font-weight:normal;margin:0;border:1px solid #ccc;padding:12px;border-radius:14px}.checks input{width:auto;margin-right:6px}
+  button{padding:11px 16px;margin-top:16px;cursor:pointer;border-radius:999px;box-shadow:none;border:0;appearance:none;-webkit-appearance:none}
+  .primary{background:#242447;color:white}.secondary,.write-org{background:white;color:#242447;border:1px solid #242447}
+  .help-results{display:grid;gap:12px;margin-top:16px}.help-card{border:1px solid #ccc;padding:16px;border-radius:16px}.help-card h4{margin:4px 0}
+  .org-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.type,.scope-pill,.need-tag{font-size:13px;color:#555}.scope-pill{border:1px solid #ccc;border-radius:999px;padding:3px 8px;white-space:nowrap}.need-tags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.need-tag{background:#f1f1f1;border-radius:999px;padding:3px 8px}.ask{background:#f6f6f6;padding:12px;margin-top:8px;border-radius:14px}.org-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}.message{border:2px solid #242447;padding:18px;margin-top:20px;border-radius:18px}pre{white-space:pre-wrap;background:#f7f7f7;padding:14px;overflow:auto;border-radius:14px}.note{background:#f7f7f7;padding:12px;border-radius:14px}.error{color:#9b1c1c;font-weight:bold;margin:6px 0 0}.selected-org{border-color:#242447;background:#fbfbff}
+</style>
+</head>
+<body>
+<h1>Who can LUMINA contact in Madrid, and how?</h1>
+<p>This prototype helps a LUMINA project team find relevant Madrid contacts for youth-led, inclusive and safer night-time urban action, then draft a respectful first email.</p>
+<ol>
+  <li>Describe the night-time safety or participation idea.</li>
+  <li>Select the kind of support needed.</li>
+  <li>Review Madrid and Spain/EU contacts.</li>
+  <li>Generate and edit a first outreach message.</li>
+</ol>
+
+<h2>What is your LUMINA action idea?</h2>
+<label for="action-description">Short description of your idea</label>
+<textarea id="action-description" required aria-describedby="action-description-error" placeholder="Example: We want to create a Youth Night Council in Madrid and test a safe-route mapping walk with young women, night-time cultural venues, transport operators and municipal equality/youth services."></textarea>
+<p class="error" id="action-description-error" hidden>Please write a short description of your LUMINA action idea before drafting a message.</p>
+<label for="help-issue">Which LUMINA area does your idea relate to?</label>
+<select id="help-issue"><option value="strategy">Youth Night Council / Local Night Strategy</option><option value="safety">Young women's night-time safety</option><option value="mobility">Safe night-time mobility</option><option value="culture">Night-time culture and venues</option><option value="placemaking">Tactical placemaking / public space testing</option></select>
+<label for="help-location">Where in Madrid?</label>
+<input id="help-location" placeholder="Neighbourhood, campus, route, public space or district in Madrid" type="text" />
+<label for="help-scope">Which contacts should be shown?</label>
+<select id="help-scope"><option value="both">Madrid + Spain/EU</option><option value="Madrid">Madrid only</option><option value="Spain/EU">Spain/EU support only</option></select>
+<label>What do you need most right now?</label>
+<div class="checks">
+  <label><input class="need" type="checkbox" value="decision"/>Municipal decision-maker / policy route</label>
+  <label><input class="need" type="checkbox" value="expertise"/>Expertise / research</label>
+  <label><input class="need" type="checkbox" value="partner"/>Project partner</label>
+  <label><input class="need" type="checkbox" value="youth"/>Youth participation</label>
+  <label><input class="need" type="checkbox" value="venue"/>Night-time venues / culture</label>
+  <label><input class="need" type="checkbox" value="visibility"/>Visibility / dissemination</label>
+</div>
+<button class="primary" id="findHelp" type="button">Show contacts</button>
+<button class="secondary" id="loadHelpExample" type="button">Load example and draft message</button>
+<p class="note">This prototype is based on public sources found for Madrid/LUMINA outreach. Verify contact details on the organisation's own website before sending.</p>
+<div id="directoryCount"></div><div class="help-results" id="helpResults"></div>
+<div class="message" hidden id="messageBox"><h3>Draft message</h3><h4 id="messageOrg">Choose a contact</h4><div id="messageTo"></div><div id="messageSubject"></div><p><a class="primary" href="#" id="mailtoBtn" style="display:inline-block;text-decoration:none;padding:10px 14px;border-radius:999px">Open in email app</a></p><pre id="messageText"></pre><p>Before sending, personalise the first paragraph and mention one specific reason why this organisation is relevant to LUMINA.</p></div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const needLabels={decision:'Policy / decision route',expertise:'Expertise',partner:'Partner',youth:'Youth participation',venue:'Night-time venue / culture',visibility:'Visibility'};
+const issueLabels={strategy:'Youth Night Council / Local Night Strategy',safety:"young women's night-time safety",mobility:'safe night-time mobility',culture:'night-time culture and venues',placemaking:'tactical placemaking and public-space testing'};
+const askByNeed={decision:'Would you be open to advising us on the relevant municipal or policy route, and who should be involved from the beginning?',expertise:'Would someone in your team be willing to give us a short expert check on our assumptions, safeguards or pilot design?',partner:'Would you be open to exploring one small LUMINA collaboration, or referring us to the most relevant colleague or partner?',youth:'Could you advise us on a meaningful way to involve young people as co-designers rather than only as survey respondents?',venue:'Could you advise whether night-time venues or cultural operators could participate safely and constructively in this pilot?',visibility:'If the pilot is useful, would you be open to sharing the learning or suggesting the right dissemination channel?'};
+const directory={
+strategy:[
+{name:'Madrid City Council — Directorate General for Equality and against Gender-Based Violence',scope:'Madrid',email:'Use official Madrid.es contact / registry route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Igualdad-y-diversidad/Direcciones-y-telefonos/Direccion-General-de-Igualdad-y-contra-la-Violencia-de-Genero/?vgnextfmt=default&vgnextoid=db9bfd2548277710VgnVCM2000001f4a900aRCRD&vgnextchannel=ab79aaa26f535510VgnVCM1000008a4a900aRCRD',needs:['decision','expertise','partner'],why:'municipal unit responsible for equality, prevention and attention against gender-based violence, institutional collaboration and European/international projects in this field.',ask:'Ask which municipal route is appropriate for a LUMINA Youth Night Council and Local Night Strategy pilot.'},
+{name:'Madrid City Council — Youth Department / youth services',scope:'Madrid',email:'Use official Madrid.es youth contact / registry route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Jovenes/?vgnextfmt=default&vgnextchannel=3e10b7dd3f7fe410VgnVCM1000000b205a0aRCRD&vgnextoid=3e10b7dd3f7fe410VgnVCM1000000b205a0aRCRD',needs:['decision','youth','partner'],why:'the municipal youth area is the natural entry point for youth participation, youth information offices and student engagement in Madrid.',ask:'Ask how young people could be involved in a structured Youth Night Council or participatory consultation.'},
+{name:'Decide Madrid / Madrid Open Government participation route',scope:'Madrid',email:'Use Decide Madrid / Madrid.es contact route',url:'https://decide.madrid.es/',needs:['decision','youth','visibility'],why:'Madrid already has a public participation platform and open-government commitments, making it relevant for democratic youth dialogue.',ask:'Ask whether a LUMINA consultation, youth proposal or pilot-learning process could use an existing participation channel.'},
+{name:'Consejo de las Mujeres del Municipio de Madrid',scope:'Madrid',email:'ejecutiva@consejomujeresmadrid.org',url:'https://www.madrid.es/',needs:['partner','expertise','visibility','decision'],why:'Madrid women’s council contact listed publicly by Madrid.es; relevant for gender equality, women’s safety and civil-society participation.',ask:'Ask whether member organisations could advise or join a youth-led night-time safety dialogue.'}
+],
+safety:[
+{name:'Madrid City Council — Directorate General for Equality and against Gender-Based Violence',scope:'Madrid',email:'Use official Madrid.es contact / registry route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Igualdad-y-diversidad/Direcciones-y-telefonos/Direccion-General-de-Igualdad-y-contra-la-Violencia-de-Genero/?vgnextfmt=default&vgnextoid=db9bfd2548277710VgnVCM2000001f4a900aRCRD&vgnextchannel=ab79aaa26f535510VgnVCM1000008a4a900aRCRD',needs:['decision','expertise','partner'],why:'it coordinates municipal policy on equality and prevention of violence against women and LGTBI people, including awareness and institutional collaboration.',ask:'Ask what safeguards and municipal actors should be involved before testing a night-time safety action.'},
+{name:'UN Women — Safe Cities and Safe Public Spaces programme / Madrid case',scope:'Spain/EU',email:'Use UN Women contact route',url:'https://www.unwomen.org/en/news/stories/2018/4/news-madrid-joins-un-women-safe-cities-global-programme',needs:['expertise','visibility','decision'],why:'Madrid joined UN Women’s Safe Cities programme, directly aligned with preventing sexual harassment and violence against women and girls in public spaces and public transport.',ask:'Ask which Safe Cities learning or Madrid experience could inform the LUMINA pilot.'},
+{name:'Asociación Otro Tiempo',scope:'Madrid',email:'nereagarcia@otrotiempo.org',url:'https://www.otrotiempo.org/',needs:['partner','expertise','visibility'],why:'Madrid-based women-against-violence organisation listed by the WAVE network, relevant to prevention, empowerment and gender-based violence expertise.',ask:'Ask whether they could advise the project’s gender-safety framing or join a stakeholder focus group.'},
+{name:'OVIM — Observatory of Institutional Gender-Based Violence',scope:'Spain/EU',email:'Use OVIM website contact route',url:'https://ovim.org/en/quienes-somos/',needs:['expertise','visibility','partner'],why:'civil-society observatory working with organisations on institutional gender-based violence and survivor-centred, intersectional approaches.',ask:'Ask whether they can recommend safeguards, experts or relevant Madrid-based organisations for night-time safety work.'},
+{name:'Consejo de las Mujeres del Municipio de Madrid',scope:'Madrid',email:'ejecutiva@consejomujeresmadrid.org',url:'https://www.madrid.es/',needs:['partner','expertise','visibility','decision'],why:'a women’s council can help connect LUMINA with local organisations and gender-equality perspectives in Madrid.',ask:'Ask for a referral to organisations or representatives interested in young women’s night-time safety.'}
+],
+mobility:[
+{name:'EMT Madrid — Empresa Municipal de Transportes de Madrid',scope:'Madrid',email:'Use EMT customer/support contact form',url:'https://www.emtmadrid.es/Atencion-al-cliente',needs:['decision','partner','expertise'],why:'Madrid’s municipal bus operator is directly relevant for night buses, safe stops, route information and awareness actions on public transport.',ask:'Ask whether a safe night-time mobility pilot could involve bus-stop observations, awareness messages or a referral to the appropriate internal department.'},
+{name:'Consorcio Regional de Transportes de Madrid',scope:'Madrid',email:'Use official CRTM contact route',url:'https://www.crtm.es/',needs:['decision','expertise','partner'],why:'regional public-transport authority coordinating mobility services across Madrid, relevant if the pilot concerns night routes and intermodal safety.',ask:'Ask which transport authority or department should be involved in safe night-time mobility actions.'},
+{name:'Madrid City Council — Mobility and Transport area',scope:'Madrid',email:'Use Madrid.es mobility contact / registry route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Movilidad-y-transportes/',needs:['decision','partner','expertise'],why:'municipal mobility policy is needed for route safety, walking routes, lighting around stops and coordination with public transport.',ask:'Ask how to route a youth-led safe-night-mobility pilot to the correct municipal mobility contact.'},
+{name:'UN Women — Safe Cities and Safe Public Spaces programme / Madrid case',scope:'Spain/EU',email:'Use UN Women contact route',url:'https://www.unwomen.org/en/news/stories/2018/4/news-madrid-joins-un-women-safe-cities-global-programme',needs:['expertise','decision','visibility'],why:'the Safe Cities framework explicitly includes public transport as part of preventing harassment and sexual violence.',ask:'Ask for guidance on public-transport safety dimensions relevant to a student-led pilot.'}
+],
+culture:[
+{name:'Noche Madrid',scope:'Madrid',email:'Use contact form on official website',url:'https://nochemadrid.org/contacto/',needs:['venue','partner','visibility'],why:'the main business association for Madrid nightlife, integrating recreational, cultural, gastronomic and entertainment venues.',ask:'Ask whether nightlife venues could be consulted or involved in a safe and inclusive night-time pilot.'},
+{name:'Madrid Culture / Ayuntamiento de Madrid cultural agenda',scope:'Madrid',email:'Use Madrid.es culture contact route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Cultura-ocio-y-deporte/',needs:['decision','venue','visibility'],why:'municipal culture routes can connect the project to public cultural programming and night-time cultural spaces.',ask:'Ask which cultural department or programme could advise a youth-led inclusive night-time action.'},
+{name:'Nightlife in Greater Madrid',scope:'Madrid',email:'Use website / Noche Madrid contact route',url:'https://nightlifeingreatermadrid.com/en/la-guia/',needs:['venue','visibility','partner'],why:'tourism/cultural nightlife platform created with Noche Madrid and the Community of Madrid, relevant for venue mapping and dissemination.',ask:'Ask whether the initiative can point to venue networks interested in safe, inclusive night-time culture.'},
+{name:'Erasmus Madrid',scope:'Madrid',email:'Use website contact route',url:'https://erasmusmadrid.org/',needs:['youth','visibility','partner'],why:'international student community in Madrid; useful if LUMINA wants young people and students to participate in night-time culture/safety dialogue.',ask:'Ask whether they can share a call for youth participants or provide insight on student night-time mobility and safety.'}
+],
+placemaking:[
+{name:'Paisaje Transversal',scope:'Madrid',email:'Use website contact route',url:'https://paisajetransversal.org/',needs:['expertise','partner','decision'],why:'Madrid-based urban innovation and participatory urbanism practice relevant to tactical placemaking, co-design and public-space pilots.',ask:'Ask whether they can advise a small tactical placemaking test linked to young women’s night-time experience.'},
+{name:'Basurama',scope:'Madrid',email:'Use website contact route',url:'https://basurama.org/',needs:['expertise','partner','visibility'],why:'Madrid-origin collective working with public space, creative urban interventions and participatory processes.',ask:'Ask whether a low-cost public-space testing action could be co-designed with young people.'},
+{name:'Medialab Matadero Madrid',scope:'Madrid',email:'Use Matadero / Medialab contact route',url:'https://www.medialab-matadero.es/',needs:['partner','youth','visibility','expertise'],why:'public civic/cultural lab environment suitable for participatory prototypes, workshops and public experimentation.',ask:'Ask whether LUMINA could host a youth co-design workshop or public prototype session.'},
+{name:'Madrid City Council — Urban planning / public space route',scope:'Madrid',email:'Use Madrid.es urban planning contact / registry route',url:'https://www.madrid.es/portales/munimadrid/es/Inicio/Vivienda-y-urbanismo/',needs:['decision','expertise','partner'],why:'municipal public-space coordination is necessary for road painting, lighting, placemaking tests or interventions in streets and squares.',ask:'Ask which municipal process is required for a temporary placemaking or safe-route test.'}
+]};
+let currentHelpOrgs=[];function scoreOrg(org,needs){return org.needs.filter(n=>needs.includes(n)).length;}
+function mailtoFor(org,subject,message){return org.email.includes('@')?`mailto:${encodeURIComponent(org.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`:org.url;}
+function selectOrg(org,need){document.querySelectorAll('.help-card').forEach(c=>c.classList.remove('selected-org'));const card=document.querySelector(`[data-org-id="${CSS.escape(org.name)}"]`);if(card)card.classList.add('selected-org');const idea=$('action-description').value.trim();const err=$('action-description-error');if(!idea){err.hidden=false;$('action-description').focus();$('action-description').scrollIntoView({behavior:'smooth',block:'center'});return;}err.hidden=true;const location=$('help-location').value.trim()||'Madrid';const issue=issueLabels[$('help-issue').value];const chosenNeed=need&&org.needs.includes(need)?need:(org.needs[0]||'partner');const chosenNeedLabel=needLabels[chosenNeed]||'support';const subject=`LUMINA Madrid: ${issue} collaboration in ${location}`;const message=`Hello ${org.name} team,
+
+We are preparing LUMINA — Local Urban Measures for Inclusive Night-time Actions — an Erasmus+ youth project focused on safer, more inclusive and culturally vibrant night-time urban life.
+
+We are exploring a Madrid action connected to ${issue} in ${location}.
+
+Our action idea is:
+${idea}
+
+At this stage, we are especially looking for: ${chosenNeedLabel}.
+
+We are contacting you because ${org.why}
+
+Our immediate question is:
+${org.ask}
+
+${askByNeed[chosenNeed]}
+
+If helpful, we can send a one-page concept note with the planned Youth Night Council, local focus groups, stakeholder mapping and possible testing actions. If another colleague or organisation is better placed, we would be very grateful for a referral.
+
+Thank you for your time and for the work you are doing in Madrid.
+
+Best regards,
+[Names]
+[LUMINA project team]
+[Organisation / role]`;$('messageBox').hidden=false;$('messageOrg').textContent=org.name;$('messageTo').textContent='To: '+org.email;$('messageSubject').textContent='Subject: '+subject;$('messageText').textContent=message;$('mailtoBtn').href=mailtoFor(org,subject,message);$('messageBox').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function findHelp(scroll=false){const issue=$('help-issue').value,scope=$('help-scope').value;let needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value);if(!needs.length)needs=['decision','expertise','partner'];let orgs=(directory[issue]||[]).filter(o=>scope==='both'||o.scope===scope).map(o=>({...o,_score:scoreOrg(o,needs)})).filter(o=>o._score>0).sort((a,b)=>b._score-a._score||a.scope.localeCompare(b.scope)||a.name.localeCompare(b.name));currentHelpOrgs=orgs;const results=$('helpResults');results.innerHTML='';$('messageBox').hidden=true;$('directoryCount').textContent=`${orgs.length} verified public contact${orgs.length===1?'':'s'} shown for this search.`;if(!orgs.length){results.innerHTML='<div class="help-card"><h4>No matching contact in this prototype yet</h4><p>Try Madrid + Spain/EU or select another support type.</p></div>';return;}orgs.forEach(org=>{const matched=org.needs.filter(n=>needs.includes(n));const primary=matched[0]||org.needs[0];const card=document.createElement('div');card.className='help-card';card.dataset.orgId=org.name;card.innerHTML=`<div class="org-top"><div><div class="type">${matched.map(n=>esc(needLabels[n])).join(' &middot; ')}</div><h4>${esc(org.name)}</h4></div><span class="scope-pill">${esc(org.scope)}</span></div><p>${esc(org.why)}</p><div class="need-tags">${org.needs.map(n=>`<span class="need-tag">${esc(needLabels[n])}</span>`).join('')}</div><div class="ask"><strong>Good first ask:</strong> ${esc(org.ask)}</div><div class="org-links"><span>${esc(org.email)}</span><a href="${esc(org.url)}" target="_blank" rel="noopener">Official / public source ↗</a></div><button class="write-org" type="button">Draft message to this contact</button>`;card.querySelector('.write-org').addEventListener('click',()=>selectOrg(org,primary));results.append(card);});if(scroll)$('directoryCount').scrollIntoView({behavior:'smooth',block:'start'});}
+$('findHelp').addEventListener('click',()=>findHelp(true));$('loadHelpExample').addEventListener('click',()=>{$('action-description').value='We want to create a Youth Night Council in Madrid and run a small night-time safety walk with young women, municipal equality/youth services, public transport actors and cultural venues. The test would identify unsafe routes or places, then propose one practical improvement such as safer bus-stop information, lighting observations or a pop-up safe-space action.';$('help-issue').value='safety';$('help-location').value='central Madrid nightlife and public transport routes';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(false);if(currentHelpOrgs[0]){const needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value);const primary=currentHelpOrgs[0].needs.find(n=>needs.includes(n))||currentHelpOrgs[0].needs[0];selectOrg(currentHelpOrgs[0],primary);}});document.querySelectorAll('.need').forEach(x=>x.addEventListener('change',()=>findHelp(false)));$('help-issue').addEventListener('change',()=>findHelp(false));$('help-scope').addEventListener('change',()=>findHelp(false));findHelp(false);
+})();
+</script>
+</body>
+</html>
