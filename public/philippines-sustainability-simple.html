@@ -88,11 +88,19 @@
     const card=document.querySelector(`[data-org-id="${CSS.escape(org.name)}"]`); if(card) card.classList.add('selected-org');
     const location=$('help-location').value.trim()||'our local community';
     const issue=issueLabels[$('help-issue').value];
+    const idea=$('action-description').value.trim();
     const chosenNeed=need && org.needs.includes(need)?need:(org.needs[0]||'partner');
+    const chosenNeedLabel=needLabels[chosenNeed]||'support';
     const subject=`Student Action Pathway: ${issue} collaboration in ${location}`;
+    const ideaText=idea?`Our action idea is:
+${idea}`:'Our action idea is still being refined, but we want to move from concern to a small, real action.';
     const message=`Hello ${org.name} team,
 
-We are a student group using ActHub's Action Pathway to work on ${issue} in ${location}. We have identified a concrete local challenge and are moving from analysis to a small, real action.
+We are a student group using ActHub's Action Pathway to work on ${issue} in ${location}.
+
+${ideaText}
+
+At this stage, we are especially looking for: ${chosenNeedLabel}.
 
 We are contacting you because ${org.why.charAt(0).toLowerCase()+org.why.slice(1)}
 
