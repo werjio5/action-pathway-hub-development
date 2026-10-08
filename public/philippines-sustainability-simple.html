@@ -44,8 +44,8 @@
 
 <h2>What is your action idea?</h2>
 <label for="action-description">Short description of your idea</label>
-<textarea id="action-description" required aria-describedby="action-description-error" placeholder="Example: We want to reduce food waste in our university cafeteria by measuring leftovers for one week and contacting partners who can help with composting or food rescue."></textarea>
-<p class="error" id="action-description-error" hidden>Please write a short description of your action idea before drafting a message.</p>
+<textarea id="action-description" aria-describedby="action-description-error" placeholder="Example: We want to reduce food waste in our university cafeteria by measuring leftovers for one week and contacting partners who can help with composting or food rescue."></textarea>
+<p class="error" id="action-description-error" hidden>Please add a short description of your action idea before sending. A placeholder is used in the draft for now.</p>
 <label for="help-issue">Which sustainability area does your idea relate to?</label>
 <select id="help-issue"><option value="food">Food waste</option><option value="biodiversity">Urban biodiversity</option><option value="mobility">Sustainable mobility</option><option value="wellbeing">Student well-being</option><option value="ai">Ethical AI in education</option></select>
 <label for="help-location">Where?</label>
@@ -92,18 +92,12 @@
     const issue=issueLabels[$('help-issue').value];
     const idea=$('action-description').value.trim();
     const ideaError=$('action-description-error');
-    if(!idea){
-      ideaError.hidden=false;
-      $('action-description').focus();
-      $('action-description').scrollIntoView({behavior:'smooth',block:'center'});
-      return;
-    }
-    ideaError.hidden=true;
+    ideaError.hidden=!!idea;
     const chosenNeed=need && org.needs.includes(need)?need:(org.needs[0]||'partner');
     const chosenNeedLabel=needLabels[chosenNeed]||'support';
     const subject=`Student Action Pathway: ${issue} collaboration in ${location}`;
-    const ideaText=`Our action idea is:
-${idea}`;
+    const ideaText=idea?`Our action idea is:
+${idea}`:'Our action idea still needs to be added here before sending.';
     const message=`Hello ${org.name} team,
 
 We are a student group using ActHub's Action Pathway to work on ${issue} in ${location}.
@@ -152,11 +146,15 @@ ActHub Action Pathway participant`;
   }
 
   $('findHelp').addEventListener('click',()=>findHelp(true));
-  $('loadHelpExample').addEventListener('click',()=>{ $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(false); if(currentHelpOrgs[0]){ const needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value); const primary=currentHelpOrgs[0].needs.find(n=>needs.includes(n))||currentHelpOrgs[0].needs[0]; selectOrg(currentHelpOrgs[0],primary); } });
+  function loadHelpExample(draft=false){
+    $('action-description').value='We want to increase urban biodiversity around our university by identifying one underused campus or neighbourhood space, mapping what species and shade already exist, and contacting partners who can help us test a small native-planting or habitat-improvement action.';
+    $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(false); if(draft&&currentHelpOrgs[0]){ const needs=[...document.querySelectorAll('.need:checked')].map(x=>x.value); const primary=currentHelpOrgs[0].needs.find(n=>needs.includes(n))||currentHelpOrgs[0].needs[0]; selectOrg(currentHelpOrgs[0],primary); }
+  }
+  $('loadHelpExample').addEventListener('click',()=>loadHelpExample(true));
   document.querySelectorAll('.need').forEach(x=>x.addEventListener('change',()=>findHelp(false)));
   $('help-issue').addEventListener('change',()=>findHelp(false));
   $('help-scope').addEventListener('change',()=>findHelp(false));
-  findHelp(false);
+  loadHelpExample(false);
 
 
 })();
