@@ -29,6 +29,7 @@
   .message{border:2px solid #19482e;padding:18px;margin-top:20px;border-radius:18px}
   pre{white-space:pre-wrap;background:#f7f7f7;padding:14px;overflow:auto;border-radius:14px}
   .note{background:#f7f7f7;padding:12px;border-radius:14px}
+  .error{color:#9b1c1c;font-weight:bold;margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -43,7 +44,8 @@
 
 <h2>What is your action idea?</h2>
 <label for="action-description">Short description of your idea</label>
-<textarea id="action-description" placeholder="Example: We want to reduce food waste in our university cafeteria by measuring leftovers for one week and contacting partners who can help with composting or food rescue."></textarea>
+<textarea id="action-description" required aria-describedby="action-description-error" placeholder="Example: We want to reduce food waste in our university cafeteria by measuring leftovers for one week and contacting partners who can help with composting or food rescue."></textarea>
+<p class="error" id="action-description-error" hidden>Please write a short description of your action idea before drafting a message.</p>
 <label for="help-issue">Which sustainability area does your idea relate to?</label>
 <select id="help-issue"><option value="food">Food waste</option><option value="biodiversity">Urban biodiversity</option><option value="mobility">Sustainable mobility</option><option value="wellbeing">Student well-being</option><option value="ai">Ethical AI in education</option></select>
 <label for="help-location">Where?</label>
@@ -89,11 +91,19 @@
     const location=$('help-location').value.trim()||'our local community';
     const issue=issueLabels[$('help-issue').value];
     const idea=$('action-description').value.trim();
+    const ideaError=$('action-description-error');
+    if(!idea){
+      ideaError.hidden=false;
+      $('action-description').focus();
+      $('action-description').scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    ideaError.hidden=true;
     const chosenNeed=need && org.needs.includes(need)?need:(org.needs[0]||'partner');
     const chosenNeedLabel=needLabels[chosenNeed]||'support';
     const subject=`Student Action Pathway: ${issue} collaboration in ${location}`;
-    const ideaText=idea?`Our action idea is:
-${idea}`:'Our action idea is still being refined, but we want to move from concern to a small, real action.';
+    const ideaText=`Our action idea is:
+${idea}`;
     const message=`Hello ${org.name} team,
 
 We are a student group using ActHub's Action Pathway to work on ${issue} in ${location}.
