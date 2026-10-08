@@ -165,6 +165,9 @@ ActHub Action Pathway participant`;
 
   $('findHelp').addEventListener('click',()=>findHelp(true));
   $('loadHelpExample').addEventListener('click',()=>{ $('help-issue').value='biodiversity';$('help-location').value='Quezon City university community';$('help-scope').value='both';document.querySelectorAll('.need').forEach(x=>x.checked=['decision','expertise','partner'].includes(x.value));findHelp(true); });
+  document.querySelectorAll('.need').forEach(x=>x.addEventListener('change',()=>findHelp(false)));
+  $('help-issue').addEventListener('change',()=>findHelp(false));
+  $('help-scope').addEventListener('change',()=>findHelp(false));
   findHelp(false);
 
   const prog=$('progress');function update(){const h=document.documentElement,m=h.scrollHeight-h.clientHeight;prog.style.width=(m?100*h.scrollTop/m:0)+'%';}window.addEventListener('scroll',update,{passive:true});update();
