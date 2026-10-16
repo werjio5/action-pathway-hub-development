@@ -165,28 +165,36 @@ html.bw-mode {
   top: 1rem;
   right: 1rem;
   z-index: 60;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2.25rem;
+  height: 1.25rem;
   margin: 0;
   padding: 0;
   border: 1px solid #111;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #111 0 50%, #fff 50% 100%);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.16);
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.16);
   cursor: pointer;
 }
 
 .tone-toggle::after {
   content: "";
   position: absolute;
-  inset: 0.28rem 0.28rem 0.28rem 0.75rem;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 0.875rem;
+  height: 0.875rem;
   border-radius: 9999px;
-  background: #fff;
+  background: #111;
+  transition: transform 0.18s ease;
+}
+
+.tone-toggle[aria-pressed="true"] {
+  background: #111;
 }
 
 .tone-toggle[aria-pressed="true"]::after {
-  inset: 0.28rem 0.75rem 0.28rem 0.28rem;
-  background: #111;
+  transform: translateX(1rem);
+  background: #fff;
 }
 
 .tone-toggle:focus-visible {

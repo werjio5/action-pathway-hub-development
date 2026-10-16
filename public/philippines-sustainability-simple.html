@@ -33,8 +33,8 @@
 </style>
 
 <style>
-  .tone-toggle{position:fixed;top:18px;right:18px;width:28px;height:28px;margin:0;padding:0;border:1px solid #111;border-radius:50%;background:linear-gradient(90deg,#111 0 50%,#fff 50% 100%);z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.16)}
-  .tone-toggle::after{content:'';position:absolute;inset:4px 4px 4px 12px;border-radius:50%;background:#fff}.tone-toggle[aria-pressed="true"]::after{background:#111;inset:4px 12px 4px 4px}.tone-toggle:focus-visible{outline:3px solid #4b72ff;outline-offset:3px}
+  .tone-toggle{position:fixed;top:18px;right:18px;width:36px;height:20px;margin:0;padding:0;border:1px solid #111;border-radius:999px;background:#fff;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.16)}
+  .tone-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#111;transition:transform .18s ease}.tone-toggle[aria-pressed="true"]{background:#111}.tone-toggle[aria-pressed="true"]::after{background:#fff;transform:translateX(16px)}.tone-toggle:focus-visible{outline:3px solid #4b72ff;outline-offset:3px}
   html.bw-mode{filter:grayscale(1)}html.bw-mode .tone-toggle{filter:none}
 </style>
 <script>if(localStorage.getItem('acthub-tone')==='bw')document.documentElement.classList.add('bw-mode');</script>
