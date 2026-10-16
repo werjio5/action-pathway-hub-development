@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+﻿@import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
@@ -134,6 +134,10 @@
   }
 }
 
+
+html.bw-mode img {
+  filter: grayscale(1);
+}
 
 html.bw-mode {
   --background: oklch(1 0 0);
