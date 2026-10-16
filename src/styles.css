@@ -183,10 +183,11 @@ html.bw-mode {
 .tone-toggle::after {
   content: "";
   position: absolute;
-  top: 0.125rem;
+  top: 50%;
   left: 0.125rem;
-  width: 0.625rem;
-  height: 0.625rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: translateY(-50%);
   border-radius: 9999px;
   background: #111;
   transition: transform 0.18s ease;
@@ -197,7 +198,7 @@ html.bw-mode {
 }
 
 .tone-toggle[aria-pressed="true"]::after {
-  transform: translateX(0.6875rem);
+  transform: translate(0.6875rem, -50%);
   background: #fff;
 }
 
