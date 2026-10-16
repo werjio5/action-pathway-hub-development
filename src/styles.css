@@ -133,3 +133,63 @@
     stroke-dashoffset: 0;
   }
 }
+
+
+html.bw-mode {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.12 0 0);
+  --ink: oklch(0.08 0 0);
+  --card: oklch(0.985 0 0);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.12 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.92 0 0);
+  --secondary-foreground: oklch(0.16 0 0);
+  --muted: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --accent: oklch(0.72 0 0);
+  --accent-foreground: oklch(0.12 0 0);
+  --border: oklch(0.8 0 0);
+  --input: oklch(0.8 0 0);
+  --ring: oklch(0.12 0 0);
+  --sand: oklch(0.92 0 0);
+  --clay: oklch(0.45 0 0);
+  --leaf: oklch(0.4 0 0);
+  --shadow-soft: 0 18px 50px -24px oklch(0.12 0 0 / 0.25);
+}
+
+.tone-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 60;
+  width: 2.625rem;
+  height: 2.625rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #111;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #111 0 50%, #fff 50% 100%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.16);
+  cursor: pointer;
+}
+
+.tone-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0.45rem 0.45rem 0.45rem 1.1rem;
+  border-radius: 9999px;
+  background: #fff;
+}
+
+.tone-toggle[aria-pressed="true"]::after {
+  inset: 0.45rem 1.1rem 0.45rem 0.45rem;
+  background: #111;
+}
+
+.tone-toggle:focus-visible {
+  outline: 3px solid #4b72ff;
+  outline-offset: 3px;
+}

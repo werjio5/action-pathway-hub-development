@@ -31,8 +31,17 @@
   .note{background:#f7f7f7;padding:12px;border-radius:14px}
   .error{color:#9b1c1c;font-weight:bold;margin:6px 0 0}
 </style>
+
+<style>
+  .tone-toggle{position:fixed;top:18px;right:18px;width:42px;height:42px;margin:0;padding:0;border:1px solid #111;border-radius:50%;background:linear-gradient(90deg,#111 0 50%,#fff 50% 100%);z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.16)}
+  .tone-toggle::after{content:'';position:absolute;inset:7px 7px 7px 18px;border-radius:50%;background:#fff}.tone-toggle[aria-pressed="true"]::after{background:#111;inset:7px 18px 7px 7px}.tone-toggle:focus-visible{outline:3px solid #4b72ff;outline-offset:3px}
+  html.bw-mode{filter:grayscale(1)}html.bw-mode .tone-toggle{filter:none}
+</style>
+<script>if(localStorage.getItem('acthub-tone')==='bw')document.documentElement.classList.add('bw-mode');</script>
 </head>
 <body>
+<button class="tone-toggle" id="toneToggle" type="button" aria-label="Switch to black and white mode" aria-pressed="false" title="Black and white / colour mode"></button>
+
 <h1>Who should you contact in the Philippines to make your sustainability action happen?</h1>
 <p>This prototype helps students find a relevant organisation to contact about a sustainability issue in the Philippines, then draft a respectful first email.</p>
 <ol>
@@ -158,6 +167,10 @@ ActHub Action Pathway participant`;
 
 
 })();
+</script>
+
+<script>
+(()=>{const button=document.getElementById('toneToggle');const setTone=mode=>{const bw=mode==='bw';document.documentElement.classList.toggle('bw-mode',bw);button.setAttribute('aria-pressed',String(bw));button.setAttribute('aria-label',bw?'Switch to colour mode':'Switch to black and white mode');localStorage.setItem('acthub-tone',bw?'bw':'colour');};setTone(localStorage.getItem('acthub-tone')==='bw'?'bw':'colour');button.addEventListener('click',()=>setTone(document.documentElement.classList.contains('bw-mode')?'colour':'bw'));})();
 </script>
 </body>
 </html>

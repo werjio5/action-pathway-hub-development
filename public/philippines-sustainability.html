@@ -87,8 +87,17 @@ a.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;whi
 @media(max-width:760px){.lab-title{font-size:17px;margin-left:9px;padding-left:9px}.topbar-inner{gap:10px}.lab-footer-inner{display:block}.lab-footer span{display:block;margin-top:10px}}
 @media(max-width:760px){.topbar-inner{gap:12px}.hero-inner{grid-template-columns:1fr;padding-top:58px}}
 </style>
+
+<style>
+  .tone-toggle{position:fixed;top:18px;right:18px;width:42px;height:42px;margin:0;padding:0;border:1px solid #111;border-radius:50%;background:linear-gradient(90deg,#111 0 50%,#fff 50% 100%);z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.16)}
+  .tone-toggle::after{content:'';position:absolute;inset:7px 7px 7px 18px;border-radius:50%;background:#fff}.tone-toggle[aria-pressed="true"]::after{background:#111;inset:7px 18px 7px 7px}.tone-toggle:focus-visible{outline:3px solid #4b72ff;outline-offset:3px}
+  html.bw-mode{filter:grayscale(1)}html.bw-mode .tone-toggle{filter:none}
+</style>
+<script>if(localStorage.getItem('acthub-tone')==='bw')document.documentElement.classList.add('bw-mode');</script>
 </head>
 <body>
+<button class="tone-toggle" id="toneToggle" type="button" aria-label="Switch to black and white mode" aria-pressed="false" title="Black and white / colour mode"></button>
+
 <div class="topbar"><div class="topbar-inner"><a href="/" class="brand" aria-label="ActHub home"><div class="mark">A</div><span class="act">Act</span><span class="hub">Hub</span><span class="lab-title">Activation Lab</span></a><a class="cta" href="#try-form">Try the form</a></div><div class="progress"><span id="progress"></span></div></div>
 <section class="hero"><div class="hero-inner"><div><div class="eyebrow">ActHub prototype &middot; Philippines sustainability</div><h1>From &ldquo;I care&rdquo; to &ldquo;I acted.&rdquo;</h1><p class="lead">This prototype page helps students move from a sustainability concern to a respectful first contact with an organisation that can help.</p><div class="hero-note">&ldquo;ActHub's goal is not to give people more content. It increases their agency.&rdquo;</div></div><div class="hero-map"><div class="mini-loop"><div class="mini-step"><div class="n">1</div><div><strong>Choose an issue</strong><span>Select the issue, location and support need.</span></div></div><div class="mini-step"><div class="n">2</div><div><strong>Find relevant organisations</strong><span>ActHub suggests relevant Philippine and international organisations.</span></div></div><div class="mini-step"><div class="n">3</div><div><strong>Draft the first message</strong><span>It drafts a first message students can personalise before contacting them.</span></div></div></div></div></div></section>
 <main>
@@ -184,6 +193,10 @@ ActHub Action Pathway participant`;
 
   const prog=$('progress');function update(){const h=document.documentElement,m=h.scrollHeight-h.clientHeight;prog.style.width=(m?100*h.scrollTop/m:0)+'%';}window.addEventListener('scroll',update,{passive:true});update();
 })();
+</script>
+
+<script>
+(()=>{const button=document.getElementById('toneToggle');const setTone=mode=>{const bw=mode==='bw';document.documentElement.classList.toggle('bw-mode',bw);button.setAttribute('aria-pressed',String(bw));button.setAttribute('aria-label',bw?'Switch to colour mode':'Switch to black and white mode');localStorage.setItem('acthub-tone',bw?'bw':'colour');};setTone(localStorage.getItem('acthub-tone')==='bw'?'bw':'colour');button.addEventListener('click',()=>setTone(document.documentElement.classList.contains('bw-mode')?'colour':'bw'));})();
 </script>
 </body>
 </html>

@@ -22,7 +22,7 @@
   body.bw-mode{background:#fff;color:#111}body.bw-mode .primary{background:#111;color:#fff}body.bw-mode .secondary,body.bw-mode .write-org{color:#111;border-color:#111;background:#fff}body.bw-mode .message{border-color:#111}body.bw-mode .selected-org{border-color:#111;background:#f5f5f5}body.bw-mode .need-tag{background:#e8e8e8}body.bw-mode .error{color:#111}
 
 </style>
-<script>if(localStorage.getItem("lumina-tone")==="bw")document.documentElement.classList.add("bw-mode");</script>
+<script>if(localStorage.getItem("acthub-tone")==="bw")document.documentElement.classList.add("bw-mode");</script>
 </head>
 <body>
 <button class="tone-toggle" id="toneToggle" type="button" aria-label="Switch to black and white mode" aria-pressed="false" title="Black and white / colour mode"></button>
@@ -64,7 +64,7 @@
 <script>
 (()=>{
 const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const toneToggle=$('toneToggle');function setTone(mode){const bw=mode==='bw';document.documentElement.classList.toggle('bw-mode',bw);document.body.classList.toggle('bw-mode',bw);toneToggle.setAttribute('aria-pressed',String(bw));toneToggle.setAttribute('aria-label',bw?'Switch to colour mode':'Switch to black and white mode');localStorage.setItem('lumina-tone',bw?'bw':'colour');}setTone(localStorage.getItem('lumina-tone')==='bw'?'bw':'colour');toneToggle.addEventListener('click',()=>setTone(document.body.classList.contains('bw-mode')?'colour':'bw'));
+const toneToggle=$('toneToggle');function setTone(mode){const bw=mode==='bw';document.documentElement.classList.toggle('bw-mode',bw);document.body.classList.toggle('bw-mode',bw);toneToggle.setAttribute('aria-pressed',String(bw));toneToggle.setAttribute('aria-label',bw?'Switch to colour mode':'Switch to black and white mode');localStorage.setItem('acthub-tone',bw?'bw':'colour');}setTone(localStorage.getItem('acthub-tone')==='bw'?'bw':'colour');toneToggle.addEventListener('click',()=>setTone(document.body.classList.contains('bw-mode')?'colour':'bw'));
 const needLabels={decision:'Policy / decision route',expertise:'Expertise',partner:'Partner',youth:'Youth participation',venue:'Night-time venue / culture',visibility:'Visibility'};
 const issueLabels={all:'LUMINA stakeholder mapping',strategy:'Youth Night Council / Local Night Strategy',safety:"young women's night-time safety",mobility:'safe night-time mobility',culture:'night-time culture and venues',placemaking:'tactical placemaking and public-space testing'};
 const askByNeed={decision:'Would you be open to advising us on the relevant municipal or policy route, and who should be involved from the beginning?',expertise:'Would someone in your team be willing to give us a short expert check on our assumptions, safeguards or pilot design?',partner:'Would you be open to exploring one small LUMINA collaboration, or referring us to the most relevant colleague or partner?',youth:'Could you advise us on a meaningful way to involve young people as co-designers rather than only as survey respondents?',venue:'Could you advise whether night-time venues or cultural operators could participate safely and constructively in this pilot?',visibility:'If the pilot is useful, would you be open to sharing the learning or suggesting the right dissemination channel?'};

@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import appCss from "../styles.css?url";
 
@@ -107,6 +107,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+function ToneToggle() {
+  const [isBlackAndWhite, setIsBlackAndWhite] = useState(false);
+
+  useEffect(() => {
+    const enabled = localStorage.getItem("acthub-tone") === "bw";
+    document.documentElement.classList.toggle("bw-mode", enabled);
+    setIsBlackAndWhite(enabled);
+  }, []);
+
+  const toggleTone = () => {
+    const next = !isBlackAndWhite;
+    document.documentElement.classList.toggle("bw-mode", next);
+    localStorage.setItem("acthub-tone", next ? "bw" : "colour");
+    setIsBlackAndWhite(next);
+  };
+
+  return (
+    <button
+      type="button"
+      className="tone-toggle"
+      onClick={toggleTone}
+      aria-pressed={isBlackAndWhite}
+      aria-label={isBlackAndWhite ? "Switch to colour mode" : "Switch to black and white mode"}
+      title="Black and white / colour mode"
+    />
+  );
+}
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -114,6 +142,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <ToneToggle />
         {children}
         <Scripts />
       </body>
