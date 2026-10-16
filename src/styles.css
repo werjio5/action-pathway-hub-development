@@ -165,8 +165,8 @@ html.bw-mode {
   top: 1rem;
   right: 1rem;
   z-index: 60;
-  width: 2.625rem;
-  height: 2.625rem;
+  width: 1.75rem;
+  height: 1.75rem;
   margin: 0;
   padding: 0;
   border: 1px solid #111;
@@ -179,13 +179,13 @@ html.bw-mode {
 .tone-toggle::after {
   content: "";
   position: absolute;
-  inset: 0.45rem 0.45rem 0.45rem 1.1rem;
+  inset: 0.28rem 0.28rem 0.28rem 0.75rem;
   border-radius: 9999px;
   background: #fff;
 }
 
 .tone-toggle[aria-pressed="true"]::after {
-  inset: 0.45rem 1.1rem 0.45rem 0.45rem;
+  inset: 0.28rem 0.75rem 0.28rem 0.28rem;
   background: #111;
 }
 
