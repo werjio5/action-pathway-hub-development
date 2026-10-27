@@ -109,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 
-type Palette = "philippines-offer" | "common-purpose";
+type Palette = "philippines-offer" | "common-purpose" | "wearebreakfast";
 type CornerStyle = "square" | "soft" | "current";
 
 function DesignSettings() {
@@ -119,6 +119,7 @@ function DesignSettings() {
 
   const applyPalette = (next: Palette) => {
     document.documentElement.classList.toggle("common-purpose-theme", next === "common-purpose");
+    document.documentElement.classList.toggle("wearebreakfast-theme", next === "wearebreakfast");
     localStorage.setItem("acthub-palette", next);
     setPalette(next);
   };
@@ -133,7 +134,7 @@ function DesignSettings() {
   useEffect(() => {
     const savedPalette = localStorage.getItem("acthub-palette");
     const savedCorners = localStorage.getItem("acthub-corners");
-    applyPalette(savedPalette === "common-purpose" ? "common-purpose" : "philippines-offer");
+    applyPalette(savedPalette === "common-purpose" || savedPalette === "wearebreakfast" ? savedPalette : "philippines-offer");
     applyCornerStyle(savedCorners === "square" || savedCorners === "soft" ? savedCorners : "current");
   }, []);
 
@@ -156,6 +157,7 @@ function DesignSettings() {
           <div className="design-settings-options">
             <button type="button" className={palette === "philippines-offer" ? "is-selected" : ""} onClick={() => applyPalette("philippines-offer")}>Philippines offer</button>
             <button type="button" className={palette === "common-purpose" ? "is-selected" : ""} onClick={() => applyPalette("common-purpose")}>Common Purpose</button>
+            <button type="button" className={palette === "wearebreakfast" ? "is-selected" : ""} onClick={() => applyPalette("wearebreakfast")}>We Are Breakfast</button>
           </div>
           <p className="design-settings-title">Corners</p>
           <div className="design-settings-options design-settings-corners">

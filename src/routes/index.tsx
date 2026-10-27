@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="wearebreakfast-home min-h-screen">
       <Nav />
 
       <main>

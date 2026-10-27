@@ -162,6 +162,64 @@ html.common-purpose-theme {
   --shadow-soft: 0 18px 50px -24px rgb(44 109 119 / 0.35);
 }
 
+html.wearebreakfast-theme {
+  --font-sans: "averta-regular", "Avenir Next", Arial, sans-serif;
+  --font-display: "averta-bold", "Avenir Next", Arial, sans-serif;
+  --background: #f8e7dc;
+  --foreground: #142d4e;
+  --ink: #123158;
+  --card: #fff8ef;
+  --card-foreground: #142d4e;
+  --popover: #fff8ef;
+  --popover-foreground: #142d4e;
+  --primary: #087fc4;
+  --primary-foreground: #fffdf7;
+  --secondary: #c9f0ee;
+  --secondary-foreground: #075e79;
+  --muted: #fde2d6;
+  --muted-foreground: #5b5872;
+  --accent: #f47d75;
+  --accent-foreground: #172a49;
+  --border: #78cbd0;
+  --input: #78cbd0;
+  --ring: #087fc4;
+  --sand: #fde2d6;
+  --clay: #e9436f;
+  --leaf: #087fc4;
+  --shadow-soft: 0 18px 50px -24px rgb(233 67 111 / 0.35);
+}
+
+html.wearebreakfast-theme body,
+html.wearebreakfast-theme button,
+html.wearebreakfast-theme input,
+html.wearebreakfast-theme select,
+html.wearebreakfast-theme textarea {
+  font-family: "averta-regular", "Avenir Next", Arial, sans-serif !important;
+}
+
+html.wearebreakfast-theme :is(h1, h2, h3, h4, h5, h6, .font-display, .site-logo-wordmark) {
+  font-family: "averta-bold", "Avenir Next", Arial, sans-serif !important;
+}
+
+html.wearebreakfast-theme .site-logo-mark { filter: hue-rotate(48deg) saturate(1.6) brightness(0.94); }
+
+html.wearebreakfast-theme .wearebreakfast-home {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(135deg, rgb(10 130 210 / 0.25), rgb(240 110 123 / 0.24)), url("/wearebreakfast-hero.jpg") center top / cover fixed;
+}
+
+html.wearebreakfast-theme .wearebreakfast-home::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgb(255 248 239 / 0.78);
+  backdrop-filter: saturate(1.12);
+}
+
+html.wearebreakfast-theme .wearebreakfast-home > * { position: relative; }
+
 html.common-purpose-theme body,
 html.common-purpose-theme button,
 html.common-purpose-theme input,
