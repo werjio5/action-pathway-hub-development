@@ -21,7 +21,7 @@
   .tone-toggle::after{content:'';position:absolute;top:50%;left:2px;width:8px;height:8px;border-radius:50%;background:#111;transform:translateY(-50%);transition:transform .18s ease}.tone-toggle[aria-pressed="true"]{background:#111}.tone-toggle[aria-pressed="true"]::after{background:#fff;transform:translate(11px,-50%)}.tone-toggle:focus-visible{outline:3px solid #4b72ff;outline-offset:3px}
   body.bw-mode{background:#fff;color:#111}body.bw-mode .primary{background:#111;color:#fff}body.bw-mode .secondary,body.bw-mode .write-org{color:#111;border-color:#111;background:#fff}body.bw-mode .message{border-color:#111}body.bw-mode .selected-org{border-color:#111;background:#f5f5f5}body.bw-mode .need-tag{background:#e8e8e8}body.bw-mode .error{color:#111}
 
-</style>
+<style>html.corners-square button:not(.tone-toggle):not(.design-settings-trigger){border-radius:0!important}html.corners-soft button:not(.tone-toggle):not(.design-settings-trigger){border-radius:.4rem!important}</style></style>
 <script>if(localStorage.getItem("acthub-tone")==="bw")document.documentElement.classList.add("bw-mode");</script>
 
 <style>
