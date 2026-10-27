@@ -268,6 +268,21 @@ html.wearebreakfast-theme .wearebreakfast-home::before {
 
 html.wearebreakfast-theme .wearebreakfast-home > * { position: relative; }
 
+html.wearebreakfast-theme .wearebreakfast-home main > section:first-child > div:nth-of-type(1) > div:first-child {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid rgb(16 16 20 / 0.4);
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 0.86);
+  box-shadow: 0 16px 35px rgb(16 16 20 / 0.2);
+}
+
+html.wearebreakfast-theme .wearebreakfast-home main > section:first-child > p {
+  background: rgb(255 227 59 / 0.92);
+  color: #101014;
+}
+
+
+
 html.common-purpose-theme body,
 html.common-purpose-theme button,
 html.common-purpose-theme input,
