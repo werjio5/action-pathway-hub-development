@@ -198,6 +198,8 @@ html.corners-soft :is(button, a[class*="rounded"], p[class*="rounded"]):not(.ton
   font-size: 0.9rem;
 }
 
+.design-settings-trigger svg { width: 0.95rem; height: 0.95rem; }
+
 .design-settings-panel {
   position: absolute;
   top: 2.2rem;
@@ -311,4 +313,9 @@ html.bw-mode {
 .tone-toggle:focus-visible {
   outline: 3px solid #4b72ff;
   outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .tone-toggle { right: 4rem; }
+  .design-settings { right: 6.25rem; }
 }

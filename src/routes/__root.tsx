@@ -148,7 +148,7 @@ function DesignSettings() {
         title="Design settings"
         onClick={() => setOpen((value) => !value)}
       >
-        <span aria-hidden="true">?</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 1 0 0 18h1.2a1.8 1.8 0 0 0 0-3.6H12a1.6 1.6 0 0 1 0-3.2h2.1A5.9 5.9 0 0 0 20 8.3 5.3 5.3 0 0 0 14.7 3H12Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.7" cy="10" r="1" fill="currentColor"/><circle cx="10.3" cy="6.9" r="1" fill="currentColor"/><circle cx="14.1" cy="7.4" r="1" fill="currentColor"/></svg>
       </button>
       {open && (
         <section id="design-settings-panel" className="design-settings-panel" aria-label="Design settings">
