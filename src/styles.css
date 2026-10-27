@@ -162,6 +162,18 @@ html.common-purpose-theme {
   --shadow-soft: 0 18px 50px -24px oklch(0.3 0.08 190 / 0.35);
 }
 
+html.common-purpose-theme body,
+html.common-purpose-theme button,
+html.common-purpose-theme input,
+html.common-purpose-theme select,
+html.common-purpose-theme textarea {
+  font-family: "averta-regular", "Avenir Next", Arial, sans-serif !important;
+}
+
+html.common-purpose-theme :is(h1, h2, h3, h4, h5, h6, .font-display, .site-logo-wordmark) {
+  font-family: "relative-faux-book-pro", "Averta", "Avenir Next", Arial, sans-serif !important;
+}
+
 html.common-purpose-theme .site-logo-mark {
   filter: hue-rotate(42deg) saturate(1.45) brightness(0.78);
 }
