@@ -162,6 +162,52 @@ html.common-purpose-theme {
   --shadow-soft: 0 18px 50px -24px rgb(44 109 119 / 0.35);
 }
 
+html.common-purpose-2-theme {
+  --font-sans: "averta-regular", "Avenir Next", Arial, sans-serif;
+  --font-display: "averta-bold", "Avenir Next", Arial, sans-serif;
+  --background: #eef3f7;
+  --foreground: #11151d;
+  --ink: #10131a;
+  --card: #f5f8fa;
+  --card-foreground: #11151d;
+  --popover: #f5f8fa;
+  --popover-foreground: #11151d;
+  --primary: #7525d8;
+  --primary-foreground: #fff;
+  --secondary: #e3eaf0;
+  --secondary-foreground: #252a33;
+  --muted: #e8eef2;
+  --muted-foreground: #555e68;
+  --accent: #ffb94e;
+  --accent-foreground: #17131a;
+  --border: #b9c2cb;
+  --input: #b9c2cb;
+  --ring: #7525d8;
+  --sand: #fff0c9;
+  --clay: #7525d8;
+  --leaf: #08aaa8;
+  --shadow-soft: 0 18px 50px -24px rgb(117 37 216 / 0.26);
+}
+
+html.common-purpose-2-theme body,
+html.common-purpose-2-theme button,
+html.common-purpose-2-theme input,
+html.common-purpose-2-theme select,
+html.common-purpose-2-theme textarea {
+  font-family: "averta-regular", "Avenir Next", Arial, sans-serif !important;
+}
+
+html.common-purpose-2-theme :is(h1, h2, h3, h4, h5, h6, .font-display, .site-logo-wordmark) {
+  font-family: "averta-bold", "Avenir Next", Arial, sans-serif !important;
+}
+
+html.common-purpose-2-theme .site-logo-mark { display: none; }
+html.common-purpose-2-theme .site-logo-wordmark { color: var(--primary); font-size: 1.82rem; font-weight: 400; letter-spacing: -0.075em; text-transform: lowercase; }
+html.common-purpose-2-theme .site-logo-wordmark .text-clay { color: var(--primary); }
+html.common-purpose-2-theme .site-logo-act::after { content: ""; }
+html.common-purpose-2-theme header { border-color: rgb(117 37 216 / 0.18); }
+html.common-purpose-2-theme .rounded-full.bg-accent { background: var(--accent); }
+
 html.wearebreakfast-theme {
   --font-sans: "averta-regular", "Avenir Next", Arial, sans-serif;
   --font-display: "averta-bold", "Avenir Next", Arial, sans-serif;

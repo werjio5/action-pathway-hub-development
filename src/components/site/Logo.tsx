@@ -7,7 +7,7 @@ export function Logo({ className = "" }: { className?: string }) {
         className="site-logo-mark h-[1.377rem] w-[1.6524rem] shrink-0 object-contain"
       />
       <span className="site-logo-wordmark font-display text-[1.6875rem] leading-none font-semibold tracking-tight text-ink">
-        Act <span className="text-clay">Hub</span>
+        <span className="site-logo-act">Act</span><span className="text-clay">Hub</span>
       </span>
     </span>
   );
