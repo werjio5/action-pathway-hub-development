@@ -136,6 +136,8 @@
 
 
 html.common-purpose-theme {
+  --font-sans: "averta-regular", "Avenir Next", Arial, sans-serif;
+  --font-display: "relative-faux-book-pro", "Averta", Arial, sans-serif;
   --background: oklch(0.963 0.035 92);
   --foreground: oklch(0.25 0.035 185);
   --ink: oklch(0.2 0.04 190);
@@ -167,10 +169,10 @@ html.common-purpose-theme .site-logo-mark {
 html.corners-square { --radius: 0; }
 html.corners-soft { --radius: 0.4rem; }
 html.corners-current { --radius: 0.75rem; }
-html.corners-square :is(button, a[class*="rounded"]):not(.tone-toggle):not(.design-settings-trigger) {
+html.corners-square :is(button, a[class*="rounded"], p[class*="rounded"]):not(.tone-toggle):not(.design-settings-trigger) {
   border-radius: 0 !important;
 }
-html.corners-soft :is(button, a[class*="rounded"]):not(.tone-toggle):not(.design-settings-trigger) {
+html.corners-soft :is(button, a[class*="rounded"], p[class*="rounded"]):not(.tone-toggle):not(.design-settings-trigger) {
   border-radius: 0.4rem !important;
 }
 
