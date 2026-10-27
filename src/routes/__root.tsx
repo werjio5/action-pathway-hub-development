@@ -107,6 +107,67 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+
+type Palette = "philippines-offer" | "common-purpose";
+type CornerStyle = "square" | "soft" | "current";
+
+function DesignSettings() {
+  const [open, setOpen] = useState(false);
+  const [palette, setPalette] = useState<Palette>("philippines-offer");
+  const [cornerStyle, setCornerStyle] = useState<CornerStyle>("current");
+
+  const applyPalette = (next: Palette) => {
+    document.documentElement.classList.toggle("common-purpose-theme", next === "common-purpose");
+    localStorage.setItem("acthub-palette", next);
+    setPalette(next);
+  };
+
+  const applyCornerStyle = (next: CornerStyle) => {
+    document.documentElement.classList.remove("corners-square", "corners-soft", "corners-current");
+    document.documentElement.classList.add(`corners-${next}`);
+    localStorage.setItem("acthub-corners", next);
+    setCornerStyle(next);
+  };
+
+  useEffect(() => {
+    const savedPalette = localStorage.getItem("acthub-palette");
+    const savedCorners = localStorage.getItem("acthub-corners");
+    applyPalette(savedPalette === "common-purpose" ? "common-purpose" : "philippines-offer");
+    applyCornerStyle(savedCorners === "square" || savedCorners === "soft" ? savedCorners : "current");
+  }, []);
+
+  return (
+    <div className="design-settings">
+      <button
+        type="button"
+        className="design-settings-trigger"
+        aria-expanded={open}
+        aria-controls="design-settings-panel"
+        aria-label="Open design settings"
+        title="Design settings"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <span aria-hidden="true">?</span>
+      </button>
+      {open && (
+        <section id="design-settings-panel" className="design-settings-panel" aria-label="Design settings">
+          <p className="design-settings-title">Colour palette</p>
+          <div className="design-settings-options">
+            <button type="button" className={palette === "philippines-offer" ? "is-selected" : ""} onClick={() => applyPalette("philippines-offer")}>Philippines offer</button>
+            <button type="button" className={palette === "common-purpose" ? "is-selected" : ""} onClick={() => applyPalette("common-purpose")}>Common Purpose</button>
+          </div>
+          <p className="design-settings-title">Corners</p>
+          <div className="design-settings-options design-settings-corners">
+            <button type="button" className={cornerStyle === "square" ? "is-selected" : ""} onClick={() => applyCornerStyle("square")}>Square</button>
+            <button type="button" className={cornerStyle === "soft" ? "is-selected" : ""} onClick={() => applyCornerStyle("soft")}>Slightly rounded</button>
+            <button type="button" className={cornerStyle === "current" ? "is-selected" : ""} onClick={() => applyCornerStyle("current")}>Current</button>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
 function ToneToggle() {
   const [isBlackAndWhite, setIsBlackAndWhite] = useState(false);
 
@@ -142,6 +203,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <DesignSettings />
         <ToneToggle />
         {children}
         <Scripts />
