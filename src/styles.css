@@ -155,13 +155,13 @@ html.common-purpose-theme {
   --input: oklch(0.78 0.05 185);
   --ring: oklch(0.48 0.11 190);
   --sand: oklch(0.94 0.045 92);
-  --clay: oklch(0.56 0.22 305);
+  --clay: oklch(0.48 0.11 190);
   --leaf: oklch(0.48 0.11 190);
   --shadow-soft: 0 18px 50px -24px oklch(0.3 0.08 190 / 0.35);
 }
 
 html.common-purpose-theme .site-logo-mark {
-  filter: hue-rotate(132deg) saturate(1.35) brightness(0.78);
+  filter: hue-rotate(42deg) saturate(1.45) brightness(0.78);
 }
 
 html.corners-square { --radius: 0; }
