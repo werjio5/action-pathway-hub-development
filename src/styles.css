@@ -230,7 +230,7 @@ html.wearebreakfast-theme {
   --input: #101014;
   --ring: #ffe33b;
   --sand: #ffe33b;
-  --clay: #fff;
+  --clay: #101014;
   --leaf: #101014;
   --shadow-soft: 0 18px 50px -24px rgb(16 16 20 / 0.32);
 }
@@ -251,8 +251,8 @@ html.wearebreakfast-theme :is(h1, h2, h3, h4, h5, h6, .font-display, .site-logo-
 }
 
 html.wearebreakfast-theme .site-logo-mark { display: none; }
-html.wearebreakfast-theme .site-logo-wordmark { display: inline; color: #ffe33b; text-shadow: 1px 1px 0 rgb(16 16 20 / 0.28); }
-html.wearebreakfast-theme .site-logo-wordmark .text-clay { color: #f43f70; }
+html.wearebreakfast-theme .site-logo-wordmark { display: inline; color: #dfbd67; text-shadow: 1px 1px 0 rgb(16 16 20 / 0.18); }
+html.wearebreakfast-theme .site-logo-wordmark .text-clay { color: #c96f82; }
 
 html.wearebreakfast-theme .wearebreakfast-home {
   position: relative;
