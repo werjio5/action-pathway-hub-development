@@ -250,7 +250,8 @@ html.wearebreakfast-theme :is(h1, h2, h3, h4, h5, h6, .font-display, .site-logo-
   letter-spacing: -0.025em;
 }
 
-html.wearebreakfast-theme .site-logo-mark { filter: hue-rotate(48deg) saturate(1.6) brightness(0.94); }
+html.wearebreakfast-theme .site-logo-mark,
+html.wearebreakfast-theme .site-logo-wordmark { display: none; }
 
 html.wearebreakfast-theme .wearebreakfast-home {
   position: relative;
