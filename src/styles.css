@@ -162,6 +162,33 @@ html.common-purpose-theme {
   --shadow-soft: 0 18px 50px -24px oklch(0.3 0.08 190 / 0.35);
 }
 
+html.granatalma-theme {
+  --background: #fff8f7;
+  --foreground: #2d1c22;
+  --ink: #2a1920;
+  --card: #fffdfc;
+  --card-foreground: #2d1c22;
+  --popover: #fffdfc;
+  --popover-foreground: #2d1c22;
+  --primary: #ea526e;
+  --primary-foreground: #fff;
+  --secondary: #f8dce2;
+  --secondary-foreground: #71243a;
+  --muted: #f9e9e7;
+  --muted-foreground: #7b5660;
+  --accent: #6d2036;
+  --accent-foreground: #fff;
+  --border: #edb9c4;
+  --input: #edb9c4;
+  --ring: #ea526e;
+  --sand: #f6efe8;
+  --clay: #ea526e;
+  --leaf: #55705e;
+  --shadow-soft: 0 18px 50px -24px rgb(234 82 110 / 0.34);
+}
+
+html.granatalma-theme .site-logo-mark { filter: hue-rotate(210deg) saturate(1.15) brightness(0.92); }
+
 html.common-purpose-2-theme {
   --font-sans: "averta-regular", "Avenir Next", Arial, sans-serif;
   --font-display: "averta-bold", "Avenir Next", Arial, sans-serif;
