@@ -1,0 +1,450 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ActHub â€” Action Workspace</title>
+<style>
+  :root{
+    --orange:#F36D3D;
+    --orange-dark:#D95429;
+    --ink:#1F2633;
+    --muted:#6B7280;
+    --cream:#F7F3EC;
+    --card:#FFFFFF;
+    --line:#E8E3DB;
+    --soft:#FFF2EC;
+    --green:#2F8F6B;
+    --yellow:#D69A28;
+    --blue:#4065C5;
+    --shadow:0 12px 30px rgba(31,38,51,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter, ui-sans-serif, system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink)}
+  button,input,textarea{font:inherit}
+  button{cursor:pointer}
+  .app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+  .sidebar{background:var(--ink);color:#fff;padding:24px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;margin:2px 8px 28px}
+  .brand-mark{width:34px;height:34px;border-radius:50%;background:var(--orange);position:relative;box-shadow:inset 0 0 0 6px rgba(255,255,255,.08)}
+  .brand-mark:after{content:"";position:absolute;left:8px;right:8px;bottom:7px;height:4px;background:#fff;border-radius:99px;transform:rotate(-28deg)}
+  .nav-label{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:#9CA3AF;margin:8px 10px}
+  .nav{display:grid;gap:6px}
+  .nav button{border:0;background:transparent;color:#D9DEE7;text-align:left;padding:11px 12px;border-radius:12px;display:flex;align-items:center;gap:10px}
+  .nav button:hover,.nav button.active{background:rgba(255,255,255,.09);color:#fff}
+  .dot{width:9px;height:9px;border-radius:50%;background:#818A99;display:inline-block}
+  .nav button.active .dot{background:var(--orange)}
+  .side-card{margin-top:auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);padding:14px;border-radius:16px;font-size:13px;color:#D6DBE4}
+  .side-card strong{color:#fff;display:block;margin-bottom:5px}
+  .side-card button{margin-top:10px;background:var(--orange);color:#fff;border:0;border-radius:10px;padding:9px 11px;width:100%;font-weight:700}
+
+  main{padding:32px 36px 60px;max-width:1450px;width:100%;margin:0 auto}
+  .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}
+  .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--orange-dark);font-weight:800}
+  h1{font-size:34px;line-height:1.05;margin:6px 0 8px}
+  .subtitle{color:var(--muted);font-size:15px}
+  .top-actions{display:flex;gap:10px;align-items:center}
+  .ghost,.primary{border-radius:12px;padding:10px 14px;font-weight:700;border:1px solid var(--line)}
+  .ghost{background:#fff;color:var(--ink)}
+  .primary{background:var(--orange);color:#fff;border-color:var(--orange)}
+  .primary:hover{background:var(--orange-dark)}
+  .avatar{width:40px;height:40px;border-radius:50%;background:#FFCFBE;color:#8A2F11;display:grid;place-items:center;font-weight:800}
+
+  .grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,.8fr);gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+  .card-pad{padding:22px}
+  .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+  .section-title h2{font-size:19px;margin:0}
+  .pill{font-size:12px;font-weight:800;padding:6px 9px;border-radius:999px;background:var(--soft);color:var(--orange-dark)}
+
+  .progress-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .progress{height:10px;background:#EEEAE3;border-radius:999px;overflow:hidden}
+  .progress > span{display:block;height:100%;width:62%;background:linear-gradient(90deg,var(--orange),#FF9C67);border-radius:999px}
+  .mini{font-size:12px;color:var(--muted)}
+
+  .steps{display:grid;gap:10px;margin-top:18px}
+  .step{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);padding:13px;border-radius:15px;background:#fff;transition:.15s ease}
+  .step:hover{transform:translateY(-1px);border-color:#D9D2C8}
+  .step .num{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#F3F4F6;color:#555;font-weight:800}
+  .step.done .num{background:#E9F6F0;color:var(--green)}
+  .step.current{border-color:#F5B89E;background:#FFF9F6}
+  .step.current .num{background:var(--orange);color:#fff}
+  .step-title{font-weight:800;font-size:14px}
+  .step-desc{font-size:12px;color:var(--muted);margin-top:2px}
+  .step button{border:0;background:transparent;color:var(--orange-dark);font-weight:800;font-size:13px}
+
+  .next-card{background:linear-gradient(135deg,#222A39,#313C50);color:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);margin-bottom:20px}
+  .next-card .eyebrow{color:#FFAF8F}
+  .next-card h2{font-size:24px;margin:8px 0 10px}
+  .next-meta{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+  .tag{background:rgba(255,255,255,.11);padding:7px 10px;border-radius:999px;font-size:12px}
+  .next-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .next-actions button{border:0;border-radius:10px;padding:10px 12px;font-weight:800}
+  .next-actions .done{background:var(--orange);color:#fff}
+  .next-actions .stuck{background:#fff;color:var(--ink)}
+  .next-actions .change{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.16)}
+
+  .quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .quick{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;text-align:left;min-height:122px}
+  .quick:hover{border-color:#F0A989;background:#FFFDFC}
+  .quick strong{display:block;font-size:14px;margin:8px 0 4px}
+  .quick span{font-size:12px;color:var(--muted);line-height:1.35;display:block}
+  .icon{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:var(--soft);font-size:18px}
+
+  .timeline{display:grid;gap:12px}
+  .event{display:grid;grid-template-columns:14px 1fr;gap:10px}
+  .event .bar{position:relative}
+  .event .bar:before{content:"";position:absolute;top:5px;left:4px;width:6px;height:6px;background:var(--orange);border-radius:50%;z-index:2}
+  .event .bar:after{content:"";position:absolute;top:12px;bottom:-18px;left:6.5px;width:1px;background:#E1DDD6}
+  .event:last-child .bar:after{display:none}
+  .event strong{font-size:13px}
+  .event p{margin:2px 0 0;color:var(--muted);font-size:12px}
+
+  .skills{display:grid;gap:11px}
+  .skill-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px}
+  .skill-name{font-size:13px;font-weight:700}
+  .dots{display:flex;gap:4px}
+  .dots i{width:9px;height:9px;border-radius:50%;background:#E5E7EB;display:block}
+  .dots i.on{background:var(--orange)}
+
+  .view{display:none}
+  .view.active{display:block}
+
+  .panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{display:grid;gap:7px;margin:14px 0}
+  .field label{font-size:12px;font-weight:800;color:#555}
+  .field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;outline:none}
+  .field textarea{min-height:110px;resize:vertical}
+  .field input:focus,.field textarea:focus{border-color:#F0A989;box-shadow:0 0 0 3px rgba(243,109,61,.10)}
+  .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .choice{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px;text-align:left}
+  .choice.selected{border-color:var(--orange);background:var(--soft)}
+  .helper{background:#FFF8F4;border:1px solid #F7D4C5;padding:13px;border-radius:13px;color:#7A4A34;font-size:13px}
+  .helper strong{display:block;color:#71361E;margin-bottom:3px}
+
+  .drawer{position:fixed;top:0;right:-470px;width:450px;max-width:92vw;height:100vh;background:#fff;border-left:1px solid var(--line);box-shadow:-18px 0 40px rgba(31,38,51,.15);z-index:30;padding:24px;transition:.24s ease;overflow:auto}
+  .drawer.open{right:0}
+  .overlay{position:fixed;inset:0;background:rgba(31,38,51,.32);backdrop-filter:blur(2px);z-index:20;opacity:0;pointer-events:none;transition:.2s}
+  .overlay.show{opacity:1;pointer-events:auto}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .close{border:0;background:#F3F4F6;width:34px;height:34px;border-radius:10px;font-size:18px}
+  .drawer h3{font-size:24px;margin:16px 0 8px}
+  .drawer p{color:var(--muted);font-size:14px;line-height:1.5}
+  .help-options{display:grid;gap:9px;margin-top:16px}
+  .help-options button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;text-align:left;font-weight:700}
+  .help-options button:hover{border-color:var(--orange);background:var(--soft)}
+  .drawer-footer{display:flex;gap:10px;margin-top:20px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 15px;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .story-card{border:1px dashed #D9CFC2;background:#FFFDFC;border-radius:16px;padding:18px}
+  .story-card h3{margin:0 0 10px;font-size:18px}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px}
+  .kpi b{font-size:20px;display:block}
+  .kpi span{font-size:11px;color:var(--muted)}
+
+  @media(max-width:1000px){
+    .app{grid-template-columns:86px 1fr}
+    .brand span,.nav button span:last-child,.nav-label,.side-card{display:none}
+    .brand{justify-content:center;margin-left:0;margin-right:0}
+    .nav button{justify-content:center;padding:12px}
+    main{padding:26px 22px}
+    .grid,.panel-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:700px){
+    .app{display:block}
+    .sidebar{position:fixed;left:0;right:0;bottom:0;top:auto;height:68px;z-index:18;display:block;padding:8px 10px;background:var(--ink)}
+    .brand,.nav-label,.side-card{display:none}
+    .nav{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+    .nav button{padding:9px 4px;font-size:10px;display:grid;place-items:center;gap:4px;text-align:center}
+    .nav button span:last-child{display:block;font-size:9px}
+    .nav button:nth-child(n+6){display:none}
+    main{padding:22px 16px 92px}
+    h1{font-size:28px}
+    .topbar{display:block}
+    .top-actions{margin-top:14px}
+    .quick-grid,.choice-grid,.kpi-row{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark"></div><span>ActHub</span></div>
+    <div class="nav-label">Action Workspace</div>
+    <div class="nav" id="nav">
+      <button class="active" data-view="workspace"><span class="dot"></span><span>Workspace</span></button>
+      <button data-view="path"><span class="dot"></span><span>Action Path</span></button>
+      <button data-view="stakeholders"><span class="dot"></span><span>Stakeholders</span></button>
+      <button data-view="evidence"><span class="dot"></span><span>Evidence</span></button>
+      <button data-view="skills"><span class="dot"></span><span>Skills</span></button>
+      <button data-view="story"><span class="dot"></span><span>Project Story</span></button>
+    </div>
+    <div class="side-card">
+      <strong>Need a hand?</strong>
+      Your project has context. We can help you move the next step forward.
+      <button data-action="stuck">I'm stuck</button>
+    </div>
+  </aside>
+
+  <main>
+    <section class="view active" id="workspace">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Your team workspace</div>
+          <h1>Campus Food Waste</h1>
+          <div class="subtitle">Turn your idea into something that actually happens.</div>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" data-action="share">Share project</button>
+          <button class="primary" data-action="checkin">Check in</button>
+          <div class="avatar">AM</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <div class="card card-pad">
+            <div class="section-title"><h2>Your Action Path</h2><span class="pill">4 of 6 steps active</span></div>
+            <div class="progress-head"><div class="mini">Project setup</div><strong>62%</strong></div>
+            <div class="progress"><span></span></div>
+            <div class="steps">
+              <div class="step done"><div class="num">âś“</div><div><div class="step-title">1. Define the challenge</div><div class="step-desc">You narrowed the challenge to campus food waste.</div></div><button data-step="1">Review</button></div>
+              <div class="step done"><div class="num">âś“</div><div><div class="step-title">2. Decide what needs to change</div><div class="step-desc">You chose a concrete outcome for the next 8 weeks.</div></div><button data-step="2">Review</button></div>
+              <div class="step current"><div class="num">3</div><div><div class="step-title">3. Map the right stakeholders</div><div class="step-desc">Find the people and organisations who can unlock your next move.</div></div><button data-step="3">Continue</button></div>
+              <div class="step"><div class="num">4</div><div><div class="step-title">4. Choose the first action</div><div class="step-desc">Pick the smallest meaningful move you can make.</div></div><button data-step="4">Open</button></div>
+              <div class="step"><div class="num">5</div><div><div class="step-title">5. Build the path</div><div class="step-desc">Owners, timing, next three moves.</div></div><button data-step="5">Open</button></div>
+              <div class="step"><div class="num">6</div><div><div class="step-title">6. Make the first move</div><div class="step-desc">Reach out, test, learn and update the plan.</div></div><button data-step="6">Open</button></div>
+            </div>
+          </div>
+
+          <div class="card card-pad" style="margin-top:20px">
+            <div class="section-title"><h2>Quick tools</h2><span class="mini">Use them when you need them</span></div>
+            <div class="quick-grid">
+              <button class="quick" data-view-target="stakeholders"><div class="icon">â—Ž</div><strong>Find who can help</strong><span>Map organisations, communities and decision-makers around your issue.</span></button>
+              <button class="quick" data-action="stuck"><div class="icon">â†—</div><strong>Get unstuck</strong><span>Tell us what is blocking progress and get a practical next move.</span></button>
+              <button class="quick" data-action="nextmove"><div class="icon">â†’</div><strong>Plan the next move</strong><span>Turn a broad intention into one owned, time-bound action.</span></button>
+              <button class="quick" data-view-target="evidence"><div class="icon">ďĽ‹</div><strong>Capture evidence</strong><span>Save a link, result, meeting note or proof of what changed.</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="next-card">
+            <div class="eyebrow">What should we do next?</div>
+            <h2>Contact the university catering team</h2>
+            <div style="color:#DCE2EC;font-size:14px;line-height:1.45">Ask whether they can share a baseline estimate of unsold meals and nominate one person for a 20-minute conversation.</div>
+            <div class="next-meta"><span class="tag">Owner: Anna</span><span class="tag">Due: 8 Oct</span><span class="tag">20â€“30 min</span></div>
+            <div class="next-actions">
+              <button class="done" data-action="done">Mark done</button>
+              <button class="stuck" data-action="stuck">I'm stuck</button>
+              <button class="change" data-action="change">Change</button>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <div class="section-title"><h2>Recent movement</h2><button class="ghost" style="padding:7px 9px;font-size:12px" data-action="checkin">Add update</button></div>
+            <div class="timeline">
+              <div class="event"><div class="bar"></div><div><strong>Challenge focused</strong><p>From â€śfood wasteâ€ť to unsold meals in university cafeterias.</p></div></div>
+              <div class="event"><div class="bar"></div><div><strong>Goal agreed</strong><p>Test one redistribution route with one campus cafĂ©.</p></div></div>
+              <div class="event"><div class="bar"></div><div><strong>Stakeholder map started</strong><p>4 potential organisations identified.</p></div></div>
+            </div>
+          </div>
+
+          <div class="card card-pad" style="margin-top:20px">
+            <div class="section-title"><h2>Action skills</h2><button class="ghost" style="padding:7px 9px;font-size:12px" data-view-target="skills">See profile</button></div>
+            <div class="skills">
+              <div class="skill-row"><span class="skill-name">Problem framing</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+              <div class="skill-row"><span class="skill-name">Stakeholder navigation</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+              <div class="skill-row"><span class="skill-name">Action planning</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+              <div class="skill-row"><span class="skill-name">Outreach</span><div class="dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="path">
+      <div class="topbar"><div><div class="eyebrow">Build the project</div><h1>Your Action Path</h1><div class="subtitle">Each answer becomes part of the same living project plan.</div></div></div>
+      <div class="panel-grid">
+        <div class="card card-pad">
+          <div class="section-title"><h2>Challenge</h2><span class="pill">Saved</span></div>
+          <div class="field"><label>What is happening now?</label><textarea>Large amounts of edible food remain unsold in campus cafeterias at the end of the day.</textarea></div>
+          <div class="field"><label>What would be different if you succeed?</label><textarea>At least one campus cafĂ© has a repeatable way to redirect safe surplus food instead of discarding it.</textarea></div>
+          <button class="primary" data-action="save">Save changes</button>
+        </div>
+        <div class="card card-pad">
+          <div class="section-title"><h2>First meaningful action</h2><span class="pill">In progress</span></div>
+          <div class="helper"><strong>Keep it small enough to test.</strong>A good first action creates new information or a new relationship within days, not months.</div>
+          <div class="field"><label>Your first action</label><textarea>Speak with the campus catering manager to understand waste volumes, constraints and whether they would test a redistribution route.</textarea></div>
+          <button class="ghost" data-action="nextmove">Help me make this more concrete</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="stakeholders">
+      <div class="topbar"><div><div class="eyebrow">Find who can unlock progress</div><h1>Stakeholder map</h1><div class="subtitle">Choose the people and organisations that matter most â€” then decide who to contact first.</div></div><button class="primary" data-action="addstake">+ Add stakeholder</button></div>
+      <div class="card card-pad">
+        <div class="section-title"><h2>Your map</h2><span class="pill">4 identified</span></div>
+        <div class="choice-grid" id="stake-grid">
+          <button class="choice selected"><strong>University catering team</strong><div class="mini" style="margin-top:5px">High influence Â· easy to reach</div></button>
+          <button class="choice"><strong>Student union</strong><div class="mini" style="margin-top:5px">Medium influence Â· high relevance</div></button>
+          <button class="choice"><strong>Local food rescue NGO</strong><div class="mini" style="margin-top:5px">Implementation partner</div></button>
+          <button class="choice"><strong>City food services</strong><div class="mini" style="margin-top:5px">High influence Â· harder to reach</div></button>
+        </div>
+        <div style="margin-top:18px" class="helper"><strong>Who should you contact first?</strong>Start with someone who is relevant, reachable and can tell you whether your idea is feasible. You can always widen the map later.</div>
+        <div class="field"><label>First contact</label><input value="University catering team" /></div>
+        <button class="primary" data-action="outreach">Draft first outreach</button>
+        <button class="ghost" data-action="stuck" style="margin-left:8px">Help me find the right people</button>
+      </div>
+    </section>
+
+    <section class="view" id="evidence">
+      <div class="topbar"><div><div class="eyebrow">Show what happened</div><h1>Evidence & progress</h1><div class="subtitle">Capture proof of action as you go â€” links, notes, meetings, outputs and outcomes.</div></div><button class="primary" data-action="evidence">+ Add evidence</button></div>
+      <div class="panel-grid">
+        <div class="card card-pad">
+          <div class="section-title"><h2>Add evidence</h2><span class="pill">Simple is enough</span></div>
+          <div class="field"><label>What happened?</label><input id="ev-title" placeholder="e.g. Meeting with catering manager" /></div>
+          <div class="field"><label>Link or note</label><textarea id="ev-note" placeholder="Paste a Drive link, URL, short note or result..."></textarea></div>
+          <button class="primary" id="ev-save">Save evidence</button>
+        </div>
+        <div class="card card-pad">
+          <div class="section-title"><h2>Saved evidence</h2><span class="pill" id="ev-count">2 items</span></div>
+          <div class="timeline" id="evidence-list">
+            <div class="event"><div class="bar"></div><div><strong>Stakeholder shortlist</strong><p>Google Drive Â· 4 organisations</p></div></div>
+            <div class="event"><div class="bar"></div><div><strong>Team decision note</strong><p>Chose a one-cafĂ© pilot as the first test.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="skills">
+      <div class="topbar"><div><div class="eyebrow">See how you are developing</div><h1>Action skills</h1><div class="subtitle">A simple reflection profile connected to what you actually do in the project.</div></div></div>
+      <div class="card card-pad">
+        <div class="section-title"><h2>Your current profile</h2><span class="pill">Team reflection</span></div>
+        <div class="skills" style="max-width:650px">
+          <div class="skill-row"><span class="skill-name">Problem framing</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+          <div class="skill-row"><span class="skill-name">Systems thinking</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="skill-row"><span class="skill-name">Stakeholder navigation</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="skill-row"><span class="skill-name">Action planning</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="skill-row"><span class="skill-name">Outreach</span><div class="dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+          <div class="skill-row"><span class="skill-name">Collaboration</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        </div>
+        <div class="helper" style="margin-top:22px"><strong>Why this matters</strong>The profile is not a grade. It helps you notice what gets easier as you move from planning to real-world action.</div>
+        <button class="primary" style="margin-top:16px" data-action="skillcheck">Update my reflection</button>
+      </div>
+    </section>
+
+    <section class="view" id="story">
+      <div class="topbar"><div><div class="eyebrow">Turn the work into something shareable</div><h1>Project story</h1><div class="subtitle">A living summary for your course, portfolio, partner or next application.</div></div><button class="primary" data-action="share">Share story</button></div>
+      <div class="story-card">
+        <div class="eyebrow">Campus Food Waste</div>
+        <h3>Testing a practical route for surplus food on campus</h3>
+        <p style="color:var(--muted);line-height:1.55">Our team is working to reduce avoidable food waste in university cafeterias by testing a simple redistribution route with one campus cafĂ© and one local partner.</p>
+        <div class="kpi-row">
+          <div class="kpi"><b>4</b><span>stakeholders mapped</span></div>
+          <div class="kpi"><b>1</b><span>priority contact</span></div>
+          <div class="kpi"><b>3</b><span>next moves</span></div>
+          <div class="kpi"><b>2</b><span>evidence items</span></div>
+        </div>
+        <div style="margin-top:20px"><strong>Current next move</strong><p style="color:var(--muted)">Contact the university catering team and request a 20-minute conversation about baseline food-waste volumes and operational constraints.</p></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head"><div class="eyebrow" id="drawer-eyebrow">Action support</div><button class="close" id="close">Ă—</button></div>
+  <h3 id="drawer-title">Get unstuck</h3>
+  <p id="drawer-copy">Choose what is blocking progress. The workspace will help you turn it into a next move.</p>
+  <div id="drawer-body"></div>
+</div>
+<div class="toast" id="toast">Saved</div>
+
+<script>
+  const navButtons=[...document.querySelectorAll('#nav button')];
+  const views=[...document.querySelectorAll('.view')];
+  function showView(id){
+    views.forEach(v=>v.classList.toggle('active',v.id===id));
+    navButtons.forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  navButtons.forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+  document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.viewTarget)));
+
+  const drawer=document.getElementById('drawer');
+  const overlay=document.getElementById('overlay');
+  const dTitle=document.getElementById('drawer-title');
+  const dCopy=document.getElementById('drawer-copy');
+  const dBody=document.getElementById('drawer-body');
+  const dEye=document.getElementById('drawer-eyebrow');
+  function openDrawer(title,copy,body,eyebrow='Action support'){
+    dTitle.textContent=title; dCopy.textContent=copy; dBody.innerHTML=body; dEye.textContent=eyebrow;
+    drawer.classList.add('open'); overlay.classList.add('show');
+  }
+  function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('show')}
+  document.getElementById('close').onclick=closeDrawer; overlay.onclick=closeDrawer;
+  function toast(msg='Saved'){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+
+  const helpBody=`<div class="help-options">
+    <button data-help="people">We don't know who to contact</button>
+    <button data-help="reply">Nobody is replying</button>
+    <button data-help="next">We don't know what to do next</button>
+    <button data-help="team">Our team is not moving</button>
+    <button data-help="idea">Our original idea is not working</button>
+    <button data-help="resource">We need resources or funding</button>
+  </div><div class="drawer-footer"><button class="primary" onclick="toast('Support option saved')">Save blocker</button></div>`;
+
+  document.querySelectorAll('[data-action="stuck"]').forEach(b=>b.addEventListener('click',()=>openDrawer('What is blocking progress?','Pick the closest situation. We will use your project context to suggest a practical next move.',helpBody,'Get unstuck')));
+
+  document.addEventListener('click',e=>{
+    const hb=e.target.closest('[data-help]');
+    if(hb){
+      document.querySelectorAll('[data-help]').forEach(x=>x.style.background='#fff');
+      hb.style.background='#FFF2EC'; hb.style.borderColor='#F36D3D';
+      toast('Blocker selected');
+    }
+  });
+
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{
+    const n=b.dataset.step;
+    const titles={1:'Define the challenge',2:'Decide what needs to change',3:'Map the right stakeholders',4:'Choose the first action',5:'Build the path',6:'Make the first move'};
+    const desc={1:'Make the issue specific enough to act on.',2:'Turn a broad ambition into a concrete change.',3:'Identify who can influence, enable or challenge the project.',4:'Pick a small action that creates movement or new information.',5:'Set owners, timing and the next three moves.',6:'Reach out, test, learn and update the path.'};
+    openDrawer(`Step ${n}: ${titles[n]}`,desc[n],`<div class="field"><label>Your working note</label><textarea placeholder="Write here...">${n==='3'?'University catering team; Student union; local food rescue NGO':''}</textarea></div><div class="helper"><strong>Need a prompt?</strong>Use the smallest useful answer. You can improve it later.</div><div class="drawer-footer"><button class="primary" onclick="toast('Step saved');closeDrawer()">Save & continue</button><button class="ghost" onclick="toast('Example opened')">Show example</button></div>`,'Action Path');
+  }));
+
+  document.querySelectorAll('[data-action="checkin"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Quick check-in','Keep your project alive with a 30-second update.',`<div class="field"><label>What happened since last time?</label><textarea placeholder="A meeting, reply, decision, test, delay..."></textarea></div><div class="field"><label>What is your next move?</label><input placeholder="One concrete action" /></div><div class="drawer-footer"><button class="primary" onclick="toast('Check-in saved');closeDrawer()">Save update</button></div>`,'Project check-in')));
+
+  document.querySelectorAll('[data-action="nextmove"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Make the next move concrete','Turn intention into one action that has an owner and a deadline.',`<div class="field"><label>What needs to happen next?</label><input value="Contact the university catering team" /></div><div class="field"><label>Who owns it?</label><input value="Anna" /></div><div class="field"><label>By when?</label><input type="date" value="2026-10-08" /></div><div class="drawer-footer"><button class="primary" onclick="toast('Next move updated');closeDrawer()">Set next move</button></div>`,'Next move')));
+
+  document.querySelectorAll('[data-action="outreach"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Draft first outreach','Start from your project context, then make it sound like you.',`<div class="field"><label>Message</label><textarea>Hi â€” we are a student team exploring a practical way to reduce surplus food on campus. We would value 20 minutes to understand current food-waste volumes, operational constraints and whether a small redistribution test could be feasible.</textarea></div><div class="drawer-footer"><button class="primary" onclick="navigator.clipboard?.writeText(document.querySelector('#drawer textarea').value);toast('Message copied')">Copy message</button></div>`,'Outreach builder')));
+
+  document.querySelectorAll('[data-action="share"]').forEach(b=>b.addEventListener('click',()=>{navigator.clipboard?.writeText(location.href);toast('Share link copied')}));
+  document.querySelectorAll('[data-action="save"]').forEach(b=>b.addEventListener('click',()=>toast('Changes saved')));
+  document.querySelectorAll('[data-action="done"]').forEach(b=>b.addEventListener('click',()=>toast('Nice â€” next move marked done')));
+  document.querySelectorAll('[data-action="change"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Change the next move','Adjust the action if the project has changed.',`<div class="field"><label>New next move</label><input value="Contact the university catering team" /></div><div class="drawer-footer"><button class="primary" onclick="toast('Next move changed');closeDrawer()">Update</button></div>`,'Next move')));
+  document.querySelectorAll('[data-action="addstake"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Add stakeholder','Add one person, organisation or community that could influence the project.',`<div class="field"><label>Name</label><input placeholder="Organisation or person" /></div><div class="field"><label>Why do they matter?</label><textarea placeholder="What can they influence, provide or clarify?"></textarea></div><div class="drawer-footer"><button class="primary" onclick="toast('Stakeholder added');closeDrawer()">Add</button></div>`,'Stakeholder map')));
+  document.querySelectorAll('[data-action="evidence"]').forEach(b=>b.addEventListener('click',()=>showView('evidence')));
+  document.querySelectorAll('[data-action="skillcheck"]').forEach(b=>b.addEventListener('click',()=>openDrawer('Update your reflection','A short pulse â€” this is not a grade.',`<div class="field"><label>I can identify who can influence my project.</label><input type="range" min="1" max="5" value="3" /></div><div class="field"><label>I can turn a broad issue into a concrete next action.</label><input type="range" min="1" max="5" value="4" /></div><div class="field"><label>I feel capable of approaching an external organisation.</label><input type="range" min="1" max="5" value="3" /></div><div class="drawer-footer"><button class="primary" onclick="toast('Reflection updated');closeDrawer()">Save reflection</button></div>`,'Action skills')));
+
+  document.querySelectorAll('.choice').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('selected')));
+  document.getElementById('ev-save').addEventListener('click',()=>{
+    const title=document.getElementById('ev-title').value.trim();
+    const note=document.getElementById('ev-note').value.trim();
+    if(!title){toast('Add a short title first');return}
+    const div=document.createElement('div'); div.className='event';
+    div.innerHTML=`<div class="bar"></div><div><strong>${title.replace(/[<>]/g,'')}</strong><p>${(note||'Saved from workspace').replace(/[<>]/g,'')}</p></div>`;
+    document.getElementById('evidence-list').prepend(div);
+    const count=document.querySelectorAll('#evidence-list .event').length;
+    document.getElementById('ev-count').textContent=`${count} items`;
+    document.getElementById('ev-title').value='';document.getElementById('ev-note').value='';toast('Evidence saved');
+  });
+</script>
+</body>
+</html>
+
+

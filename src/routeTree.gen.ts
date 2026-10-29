@@ -1,4 +1,4 @@
-/* eslint-disable */
+﻿/* eslint-disable */
 
 // @ts-nocheck
 
@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ActHubRouteImport } from './routes/act-hub'
 import { Route as ForUniversitiesRouteImport } from './routes/for-universities'
 import { Route as MethodRouteImport } from './routes/method'
+import { Route as WorkspacePlanningRouteImport } from './routes/workspace-planning'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const MethodRoute = MethodRouteImport.update({
   path: '/method',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspacePlanningRoute = WorkspacePlanningRouteImport.update({
+  id: '/workspace-planning',
+  path: '/workspace-planning',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/act-hub': typeof ActHubRoute
   '/for-universities': typeof ForUniversitiesRoute
   '/method': typeof MethodRoute
+  '/workspace-planning': typeof WorkspacePlanningRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/act-hub': typeof ActHubRoute
   '/for-universities': typeof ForUniversitiesRoute
   '/method': typeof MethodRoute
+  '/workspace-planning': typeof WorkspacePlanningRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,14 @@ export interface FileRoutesById {
   '/act-hub': typeof ActHubRoute
   '/for-universities': typeof ForUniversitiesRoute
   '/method': typeof MethodRoute
+  '/workspace-planning': typeof WorkspacePlanningRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/act-hub' | '/for-universities' | '/method'
+  fullPaths: '/' | '/about' | '/act-hub' | '/for-universities' | '/method' | '/workspace-planning'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/act-hub' | '/for-universities' | '/method'
-  id: '__root__' | '/' | '/about' | '/act-hub' | '/for-universities' | '/method'
+  to: '/' | '/about' | '/act-hub' | '/for-universities' | '/method' | '/workspace-planning'
+  id: '__root__' | '/' | '/about' | '/act-hub' | '/for-universities' | '/method' | '/workspace-planning'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +86,7 @@ export interface RootRouteChildren {
   ActHubRoute: typeof ActHubRoute
   ForUniversitiesRoute: typeof ForUniversitiesRoute
   MethodRoute: typeof MethodRoute
+  WorkspacePlanningRoute: typeof WorkspacePlanningRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -125,6 +135,7 @@ const rootRouteChildren: RootRouteChildren = {
   ActHubRoute: ActHubRoute,
   ForUniversitiesRoute: ForUniversitiesRoute,
   MethodRoute: MethodRoute,
+  WorkspacePlanningRoute: WorkspacePlanningRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
@@ -139,3 +150,4 @@ declare module '@tanstack/react-start' {
     config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }
+
