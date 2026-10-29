@@ -109,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 
-type Palette = "philippines-offer" | "common-purpose" | "common-purpose-2" | "wearebreakfast" | "granatalma" | "orsi";
+type Palette = "philippines-offer" | "common-purpose" | "common-purpose-2" | "wearebreakfast" | "granatalma" | "orsi" | "orsi-2";
 type CornerStyle = "square" | "soft" | "current";
 
 function DesignSettings() {
@@ -123,6 +123,7 @@ function DesignSettings() {
     document.documentElement.classList.toggle("common-purpose-2-theme", next === "common-purpose-2");
     document.documentElement.classList.toggle("granatalma-theme", next === "granatalma");
     document.documentElement.classList.toggle("orsi-theme", next === "orsi");
+    document.documentElement.classList.toggle("orsi-2-theme", next === "orsi-2");
     localStorage.setItem("acthub-palette", next);
     setPalette(next);
   };
@@ -137,7 +138,7 @@ function DesignSettings() {
   useEffect(() => {
     const savedPalette = localStorage.getItem("acthub-palette");
     const savedCorners = localStorage.getItem("acthub-corners");
-    applyPalette(savedPalette === "common-purpose" || savedPalette === "common-purpose-2" || savedPalette === "wearebreakfast" || savedPalette === "granatalma" || savedPalette === "orsi" ? savedPalette : "philippines-offer");
+    applyPalette(savedPalette === "common-purpose" || savedPalette === "common-purpose-2" || savedPalette === "wearebreakfast" || savedPalette === "granatalma" || savedPalette === "orsi" || savedPalette === "orsi-2" ? savedPalette : "philippines-offer");
     applyCornerStyle(savedCorners === "square" || savedCorners === "soft" ? savedCorners : "current");
   }, []);
 
@@ -164,6 +165,7 @@ function DesignSettings() {
             <button type="button" className={palette === "wearebreakfast" ? "is-selected" : ""} onClick={() => applyPalette("wearebreakfast")}>We Are Breakfast</button>
             <button type="button" className={palette === "granatalma" ? "is-selected" : ""} onClick={() => applyPalette("granatalma")}>Granatalma</button>
             <button type="button" className={palette === "orsi" ? "is-selected" : ""} onClick={() => applyPalette("orsi")}>Orsi</button>
+            <button type="button" className={palette === "orsi-2" ? "is-selected" : ""} onClick={() => applyPalette("orsi-2")}>Orsi 2</button>
           </div>
           <p className="design-settings-title">Corners</p>
           <div className="design-settings-options design-settings-corners">
