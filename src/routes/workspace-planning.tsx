@@ -28,7 +28,7 @@ const concepts = [
   {
     number: "Idea 2",
     title: "Action Lab & Workspace",
-    href: "/action-lab-workspace.html",
+    href: "/action-lab-workspace",
     description: "A full four-week course environment that distinguishes individual reflection from shared project work. It includes planning, action tracking, documentation and a course-aware closing report in one detailed prototype.",
     points: [
       "Individual and group work remain structurally separate throughout the course.",
