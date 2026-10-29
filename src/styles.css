@@ -162,6 +162,35 @@ html.common-purpose-theme {
   --shadow-soft: 0 18px 50px -24px oklch(0.3 0.08 190 / 0.35);
 }
 
+html.orsi-theme {
+  --background: #fffdf7;
+  --foreground: #28211c;
+  --ink: #28211c;
+  --card: #fffefb;
+  --card-foreground: #28211c;
+  --popover: #fffefb;
+  --popover-foreground: #28211c;
+  --primary: #4caf9a;
+  --primary-foreground: #fffefb;
+  --secondary: #e7f0d1;
+  --secondary-foreground: #45334d;
+  --muted: #f9f2df;
+  --muted-foreground: #675f58;
+  --accent: #9fc967;
+  --accent-foreground: #28211c;
+  --border: #c8dca7;
+  --input: #c8dca7;
+  --ring: #4caf9a;
+  --sand: #fedc89;
+  --clay: #9fc967;
+  --leaf: #4caf9a;
+  --shadow-soft: 0 18px 50px -24px rgb(76 175 154 / 0.3);
+}
+
+html.orsi-theme .site-logo-mark { filter: hue-rotate(55deg) saturate(0.86) brightness(0.94); }
+html.orsi-theme .site-logo-wordmark { color: #45334d; }
+html.orsi-theme .site-logo-wordmark .text-clay { color: #4caf9a; }
+
 html.granatalma-theme {
   --background: #fff8f7;
   --foreground: #2d1c22;
