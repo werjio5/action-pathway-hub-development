@@ -61,7 +61,7 @@ const DEFAULT_RULES='Tisztelettel figyelünk egymás nézőpontjára.\nMindenki 
 const uid=()=>crypto.randomUUID?crypto.randomUUID():'id'+Date.now().toString(36)+Math.random().toString(36).slice(2);
 const now=()=>new Date().toISOString();
 function newProject(name='Első közös akciónk',mode='team',kind='course'){
- const id=uid(),count=mode==='solo'?1:5,members=Array.from({length:count},(_,i)=>({id:uid(),name:i?`${i+1}. résztvevő`:'Te',place:''}));
+ const id=uid(),count=mode==='solo'?1:5,members=Array.from({length:count},(_,i)=>({id:uid(),name:DEFAULT_MEMBER_NAMES[i]||`${i+1}. r?sztvev?`,place:''}));
  return{id,name,kind,mode,created:now(),members,personal:Object.fromEntries(members.map(m=>[m.id,{done:{},submissions:{}}])),group:{rules:DEFAULT_RULES,locationMode:'one',permission:'check',actionStatus:'planning',share:'private',format:'poster',finish:'close'},groupDone:{},approvals:{},tasks:[],contacts:[],evidence:[],logs:[],options:[],metrics:[],changes:[],resources:[],groupSubmission:null,lastWeek:1,lastStep:'w1-start'};
 }
 
@@ -73,8 +73,9 @@ const safeURL=v=>{try{const u=new URL(v);return ['https:','http:'].includes(u.pr
 const dateStr=v=>v?new Date(v).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'}):'Nincs megadva';
 const dateTime=v=>v?new Date(v).toLocaleString('hu-HU',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
 const localDay=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+const DEFAULT_MEMBER_NAMES=['András', 'Orsi', 'Péter', 'Zsuzska', 'Viktor'];
 let storageWarning='',saveTimer,toastTimer,idbPromise;
-function loadState(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s?.app==='acthub-workspace'&&Array.isArray(s.projects)&&s.projects.length){s.projects.forEach(project=>{const first=project?.members?.[0];if(first?.name==='Te')first.name='András'});return s}}catch(err){storageWarning='A böngészőmentés nem érhető el, vagy a korábbi mentés nem olvasható.'}const p=newProject();return{app:'acthub-workspace',version:1,projects:[p],activeProject:p.id,activeMember:p.members[0].id,updated:now()}}
+function loadState(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s?.app==='acthub-workspace'&&Array.isArray(s.projects)&&s.projects.length){s.projects.forEach(project=>project?.members?.forEach((member,index)=>{const generic=index===0?'Te':`${index+1}. r?sztvev?`;if(member.name===generic)member.name=DEFAULT_MEMBER_NAMES[index]||member.name}));return s}}catch(err){storageWarning='A böngészőmentés nem érhető el, vagy a korábbi mentés nem olvasható.'}const p=newProject();return{app:'acthub-workspace',version:1,projects:[p],activeProject:p.id,activeMember:p.members[0].id,updated:now()}}
 let state=loadState();
 let ui={page:'home',week:1,step:'w1-start',tab:'summary',draft:{},modal:null,errors:[],openSidebar:false,helpRoute:'direction'};
 const P=()=>state.projects.find(p=>p.id===state.activeProject)||state.projects[0];
