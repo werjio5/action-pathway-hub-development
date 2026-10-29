@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight, Lightbulb } from "lucide-react";
 import { Footer } from "@/components/site/Footer";
 
@@ -7,7 +7,7 @@ export const Route = createFileRoute("/workspace-planning")({
     meta: [
       { title: "Workspace planning | Act Hub" },
       { name: "robots", content: "noindex, nofollow, noarchive" },
-      { name: "description", content: "Four exploratory Action Workspace concepts for the Action Lab course." },
+      { name: "description", content: "Three exploratory Action Workspace concepts for the Action Lab course." },
     ],
   }),
   component: WorkspacePlanning,
@@ -27,17 +27,6 @@ const concepts = [
   },
   {
     number: "Idea 2",
-    title: "Action Workspace",
-    href: "/action-workspace.html",
-    description: "A dashboard-led concept for teams that want to see their action path, current move and practical tools at a glance. It makes stakeholder mapping, evidence and short check-ins easily discoverable from one workspace.",
-    points: [
-      "The action-path dashboard makes progress and the current decision visible immediately.",
-      "Quick tools connect stakeholder discovery, outreach, evidence and next-move planning.",
-      "A lightweight project story can turn the work into a shareable summary.",
-    ],
-  },
-  {
-    number: "Idea 3",
     title: "Action Lab & Workspace",
     href: "/action-lab-workspace.html",
     description: "A full four-week course environment that distinguishes individual reflection from shared project work. It includes planning, action tracking, documentation and a course-aware closing report in one detailed prototype.",
@@ -48,7 +37,7 @@ const concepts = [
     ],
   },
   {
-    number: "Idea 4",
+    number: "Idea 3",
     title: "Simple Action Workspace",
     href: "/action-workspace-simple.html",
     description: "The most focused four-week version: one question, one answer and one next step at a time. It reduces the course journey to a gentle guided flow while preserving a shared action summary.",
@@ -67,7 +56,7 @@ function WorkspacePlanning() {
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Internal exploration</p>
         <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight text-ink sm:text-5xl">Workspace planning</h1>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          Four standalone directions for the Action Lab course workspace. Each link opens a working prototype in a separate page; this overview does not change the public site navigation or visual system.
+          Three standalone directions for the Action Lab course workspace. Each link opens a working prototype in a separate page; this overview does not change the public site navigation or visual system.
         </p>
         <section className="mt-12 grid gap-6 md:grid-cols-2" aria-label="Workspace concepts">
           {concepts.map((concept) => (

@@ -1,4 +1,4 @@
-﻿User-agent: Googlebot
+User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
@@ -16,6 +16,5 @@ Allow: /
 Disallow: /lumina.html
 
 Disallow: /workspace-planning-v2.html
-Disallow: /action-workspace.html
 Disallow: /action-lab-workspace.html
 Disallow: /action-workspace-simple.html
